@@ -173,6 +173,75 @@ Hamburger animé. Contrôlé (`open` + `onChange`) ou non (`defaultOpen`).
 <CyMenuToggle open={isOpen} onChange={setOpen} />
 ```
 
+### CyShaderBg
+Background animé WebGL (wrapper `Warp` de `@paper-design/shaders-react`). `preset: 'brand' | 'muted'` × `intensity: 'low' | 'medium' | 'high'`. Parent en `position: relative`. **Un seul `intensity="high"` par page.**
+```tsx
+<div className="relative overflow-hidden">
+  <CyShaderBg preset="brand" intensity="medium" />
+  <div className="relative z-10">…</div>
+</div>
+```
+
+### CyLiveDot
+Point pulse animé (eyebrows, status indicators, badges live). `size?`, `color?`, `pulse?`. `aria-hidden` auto.
+```tsx
+<CyLiveDot size={6} pulse />
+```
+
+### CyLinkPill
+Mini-CTA secondaire en pill glassmorphic vert. **Pas un CTA primaire** (utiliser CyButton pour ça). `href`, `external?`, `icon?`.
+```tsx
+<CyLinkPill href="https://..." external icon={<ArrowUpRight size={12} />}>Lire l'article</CyLinkPill>
+```
+
+### CyGradientText
+Helper background-clip text. `preset: 'green' | 'green-soft' | 'green-strong'`. Un mot par titre, jamais une phrase.
+```tsx
+<h1>Votre <CyGradientText>bras droit IA</CyGradientText>.</h1>
+```
+
+### CyAuroraBg
+Fond animé pure CSS (3 blobs verts qui dérivent + grain SVG + vignette). Alternative à `CyShaderBg` pour les cartes statiques (pas de lag GPU mobile). Parent en `position: relative; overflow: hidden; isolation: isolate`.
+```tsx
+<article style={{ position: 'relative', overflow: 'hidden', isolation: 'isolate' }}>
+  <CyAuroraBg intensity="medium" />
+  <div style={{ position: 'relative', zIndex: 1 }}>…</div>
+</article>
+```
+
+### CyScrollHint
+Chevron-down animé bounce, indication "continue à scroller". Décoratif par défaut (`aria-hidden`).
+```tsx
+<CyScrollHint />
+```
+
+### CyReveal
+Wrapper qui fade-up les enfants à l'entrée du viewport via `IntersectionObserver`. `delay: 0|1|2|3|4|5` pour stagger.
+```tsx
+<CyReveal>Titre</CyReveal>
+<CyReveal delay={1}>Lede</CyReveal>
+```
+
+### CyRoadmapStrip
+Strip horizontal de pills numérotées + flèches. 3-6 étapes idéalement. Decorative (`aria-hidden`).
+```tsx
+<CyRoadmapStrip steps={[{ num: '01', label: 'Audit' }, { num: '02', label: 'Cibles' }]} />
+```
+
+### CyCtaBanner
+Banner CTA section pleine largeur, signature Cyrano. Compose `CyAuroraBg` + `CyGradientText` + `CyRoadmapStrip` (optionnel) + `CyButton`. **Un seul par page.**
+```tsx
+<CyCtaBanner
+  eyebrow="La roadmap"
+  titleBefore="Comment ça se passe "
+  titleAccent="concrètement"
+  titleAfter=" ?"
+  subtitle="Votre roadmap en 6 étapes."
+  buttonLabel="Découvrir"
+  href="/#agence"
+/>
+```
+
 ---
 
 ## 6. Inventaire `app/` (Tailwind + cn)
@@ -457,7 +526,43 @@ Avant de soumettre du code, vérifie :
 
 ---
 
-## 11. Si tu doutes
+## 11. Migration DS → projet consumer (Next.js App Router)
+
+Le DS Cyrano est servi en **Vite** (CSR pur). Les projets consumer (site Cyrano, futurs dashboards) tournent en **Next.js App Router** où le SSR est le défaut. Quand un composant `Cy*` est copié depuis `business/ds/src/components/core/` vers `src/components/core/` du projet Next, il faut **systématiquement ajouter `'use client';` en première ligne du `.tsx`**.
+
+**Pourquoi** : Next.js considère tout composant comme Server Component par défaut. Tout hook React (`useState`, `useEffect`, `useRef`) ou event handler (`onClick`, `onMouseEnter`, `onChange`) plante en SSR avec une erreur HTTP 500. Le DS Vite n'a pas cette contrainte (tout client), donc ne porte pas la directive — mais le consumer Next doit la rajouter.
+
+**Convention** : appliquer `'use client'` à **tous** les composants `Cy*` migrés, même les purement présentationnels (`CyGradientText`, `CyLiveDot`). Uniformité, et zéro friction si le composant évolue plus tard pour intégrer un hook.
+
+```tsx
+// Vue côté DS (~/Desktop/claude-core/business/ds/src/components/core/CyReveal.tsx)
+'use client';  // ← présent côté DS aussi par cohérence (inerte en Vite)
+
+import React, { useEffect, useRef, useState } from 'react';
+// ...
+```
+
+```tsx
+// Vue côté site Next (src/components/core/CyReveal.tsx) — strictement identique
+'use client';
+
+import React, { useEffect, useRef, useState } from 'react';
+// ...
+```
+
+Côté site, `index.ts` ré-exporte. Côté pages Next (`app/.../page.tsx`), les imports passent toujours par `@/components/core` sans `'use client'` au-dessus (le SC parent peut importer un CC).
+
+---
+
+## 12. Preview hébergée
+
+Deploy preview à jour : **https://ds.hellocyrano.com** (sous-domaine Vercel, alias secondaire `cyrano-ds.vercel.app`). Mise à jour manuelle via `npx vercel --prod` depuis `business/ds/` (auto-deploy GitHub à brancher).
+
+**Pour qui le DS hébergé** : principalement les humains (Louis, futurs collaborateurs, partage de lien). Les IA du workflow Cyrano (Claude Code, Claude Design, Cursor) lisent directement les fichiers locaux de `business/ds/`, elles n'ont pas besoin de l'URL.
+
+---
+
+## 13. Si tu doutes
 
 Source de vérité ultime = le code source. Si tu hésites sur une prop ou un comportement, ouvre directement le fichier :
 
