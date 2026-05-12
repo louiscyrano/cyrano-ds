@@ -1,0 +1,53 @@
+/* Tooltip Cyrano — fond inversé pour contraste maximum, animations subtiles */
+.cy-tooltip-content {
+  z-index: var(--cy-z-dropdown, 100);
+  width: fit-content;
+  max-width: 280px;
+  padding: 8px 12px;
+  border-radius: var(--cy-radius-lg);
+  background: var(--cy-text-primary);
+  color: var(--cy-bg);
+  font-family: var(--cy-font-body);
+  font-size: var(--cy-text-xs);
+  font-weight: 500;
+  line-height: 1.5;
+  text-wrap: balance;
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+  animation-duration: 150ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.cy-tooltip-content[data-state='delayed-open'][data-side='top'] {
+  animation-name: cy-tt-slide-down-fade;
+}
+.cy-tooltip-content[data-state='delayed-open'][data-side='right'] {
+  animation-name: cy-tt-slide-left-fade;
+}
+.cy-tooltip-content[data-state='delayed-open'][data-side='bottom'] {
+  animation-name: cy-tt-slide-up-fade;
+}
+.cy-tooltip-content[data-state='delayed-open'][data-side='left'] {
+  animation-name: cy-tt-slide-right-fade;
+}
+
+.cy-tooltip-arrow {
+  fill: var(--cy-text-primary);
+}
+
+@keyframes cy-tt-slide-up-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cy-tt-slide-down-fade {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cy-tt-slide-left-fade {
+  from { opacity: 0; transform: translateX(4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes cy-tt-slide-right-fade {
+  from { opacity: 0; transform: translateX(-4px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

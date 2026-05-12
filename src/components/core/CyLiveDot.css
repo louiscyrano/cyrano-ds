@@ -1,0 +1,18 @@
+.cy-live-dot {
+  display: inline-block;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.cy-live-dot--pulse {
+  animation: cy-live-dot-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes cy-live-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cy-live-dot--pulse { animation: none; }
+}

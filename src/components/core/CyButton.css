@@ -1,0 +1,41 @@
+/* Shine hover effect — utilisé par les variants primary et icon */
+.cy-btn-shine {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.cy-btn-shine::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    45deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 75%,
+    transparent 100%
+  );
+  background-size: 250% 100%;
+  background-position: 200% 0;
+  background-repeat: no-repeat;
+  transition: background-position 1000ms ease;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.9;
+}
+
+.cy-btn-shine:hover::before {
+  background-position: -100% 0;
+}
+
+.cy-btn-shine:disabled::before,
+.cy-btn-shine[aria-disabled='true']::before {
+  display: none;
+}
+
+.cy-btn-shine > * {
+  position: relative;
+  z-index: 2;
+}

@@ -1,0 +1,26 @@
+.cy-reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 0.84, 0.3, 1),
+    transform 0.9s cubic-bezier(0.16, 0.84, 0.3, 1);
+}
+
+.cy-reveal.is-in {
+  opacity: 1;
+  transform: none;
+}
+
+.cy-reveal--d1 { transition-delay: 80ms; }
+.cy-reveal--d2 { transition-delay: 160ms; }
+.cy-reveal--d3 { transition-delay: 240ms; }
+.cy-reveal--d4 { transition-delay: 320ms; }
+.cy-reveal--d5 { transition-delay: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cy-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

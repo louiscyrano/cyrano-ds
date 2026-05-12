@@ -1,0 +1,91 @@
+/* ============================================================
+   CyAuroraBg - 3 drifting blobs + grain + vignette
+   ============================================================ */
+
+.cy-aurora-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.cy-aurora-bg__blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+}
+
+/* Positions + sizes des 3 blobs */
+.cy-aurora-bg__blob--a {
+  width: 360px;
+  height: 360px;
+  top: -100px;
+  left: -80px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(48, 248, 165, 0.45), transparent 70%);
+  animation: cy-aurora-drift-a 14s ease-in-out infinite;
+}
+
+.cy-aurora-bg__blob--b {
+  width: 420px;
+  height: 420px;
+  top: -40px;
+  right: -120px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(5, 211, 126, 0.5), transparent 70%);
+  animation: cy-aurora-drift-b 18s ease-in-out infinite;
+}
+
+.cy-aurora-bg__blob--c {
+  width: 300px;
+  height: 300px;
+  bottom: -80px;
+  left: 30%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(116, 255, 197, 0.32), transparent 70%);
+  animation: cy-aurora-drift-c 22s ease-in-out infinite;
+}
+
+/* Intensity (opacity multiplier sur les blobs) */
+.cy-aurora-bg--subtle .cy-aurora-bg__blob { opacity: 0.35; }
+.cy-aurora-bg--medium .cy-aurora-bg__blob { opacity: 0.6; }
+.cy-aurora-bg--strong .cy-aurora-bg__blob { opacity: 0.85; }
+
+@keyframes cy-aurora-drift-a {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 40px) scale(1.1); }
+}
+
+@keyframes cy-aurora-drift-b {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-50px, 60px) scale(0.95); }
+}
+
+@keyframes cy-aurora-drift-c {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(40px, -30px) scale(1.15); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cy-aurora-bg__blob { animation: none; }
+}
+
+/* Grain */
+.cy-aurora-bg__grain {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.12 0'/></filter><rect width='200' height='200' filter='url(%23n)' opacity='0.6'/></svg>");
+  mix-blend-mode: overlay;
+  opacity: 0.35;
+}
+
+/* Vignette */
+.cy-aurora-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(3, 7, 18, 0.55) 0%,
+    rgba(3, 7, 18, 0.15) 35%,
+    rgba(3, 7, 18, 0.7) 100%
+  );
+}

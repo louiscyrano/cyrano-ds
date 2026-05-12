@@ -1,0 +1,167 @@
+:root {
+  --cy-green-300: #74ffc5;
+  --cy-green-400: #30f8a5;
+  --cy-green-500: #05d37e;
+  --cy-green-600: #00bc6f;
+  --cy-green-700: #029358;
+
+  --cy-deep-600: #016c78;
+  --cy-deep-700: #014751;
+  --cy-deep-800: #063841;
+  --cy-deep-900: #111827;
+  --cy-deep-950: #030712;
+
+  --cy-gray-300: #d1d5db;
+  --cy-gray-400: #9ca3af;
+  --cy-gray-500: #6b7280;
+  --cy-gray-600: #4b5563;
+  --cy-gray-700: #374151;
+  --cy-gray-800: #1f2937;
+  --cy-gray-900: #111827;
+
+  --cy-success: #10b981;
+  --cy-error: #ef4444;
+  --cy-warning: #f59e0b;
+  --cy-info: var(--cy-green-500);
+
+  /*
+   * Soft pairs (bg + border) pour les status / banners.
+   * color-mix résout au runtime contre --cy-bg (thémable) — le même token
+   * marche en dark et light sans branche supplémentaire.
+   */
+  --cy-success-soft-bg: color-mix(in srgb, var(--cy-success) 10%, var(--cy-bg));
+  --cy-success-soft-border: color-mix(in srgb, var(--cy-success) 25%, var(--cy-bg));
+  --cy-error-soft-bg: color-mix(in srgb, var(--cy-error) 10%, var(--cy-bg));
+  --cy-error-soft-border: color-mix(in srgb, var(--cy-error) 25%, var(--cy-bg));
+  --cy-warning-soft-bg: color-mix(in srgb, var(--cy-warning) 10%, var(--cy-bg));
+  --cy-warning-soft-border: color-mix(in srgb, var(--cy-warning) 25%, var(--cy-bg));
+  --cy-info-soft-bg: color-mix(in srgb, var(--cy-info) 10%, var(--cy-bg));
+  --cy-info-soft-border: color-mix(in srgb, var(--cy-info) 25%, var(--cy-bg));
+
+  --cy-gradient-primary: linear-gradient(to right, var(--cy-green-400), var(--cy-green-500));
+  --cy-gradient-alt: linear-gradient(to right, var(--cy-green-500), var(--cy-green-600));
+  --cy-gradient-hover: linear-gradient(to right, var(--cy-green-600), var(--cy-green-700));
+  --cy-gradient-featured: linear-gradient(to right, var(--cy-deep-950), var(--cy-deep-600) 50%, var(--cy-green-400));
+  --cy-gradient-disabled: linear-gradient(to right, var(--cy-gray-700), var(--cy-gray-800));
+
+  --cy-font-heading: 'Poppins', -apple-system, sans-serif;
+  --cy-font-body: 'Satoshi', -apple-system, sans-serif;
+
+  --cy-text-xs: 0.75rem;
+  --cy-text-sm: 0.875rem;
+  --cy-text-base: 1rem;
+  --cy-text-lg: 1.125rem;
+  --cy-text-xl: 1.25rem;
+  --cy-text-2xl: 1.5rem;
+  --cy-text-3xl: 2rem;
+  --cy-text-4xl: 2.5rem;
+  --cy-text-5xl: 3rem;
+  --cy-text-6xl: 3.5rem;
+
+  --cy-tracking-tight: -0.02em;
+  --cy-tracking-tighter: -0.03em;
+
+  --cy-space-1: 0.25rem;
+  --cy-space-2: 0.5rem;
+  --cy-space-3: 0.75rem;
+  --cy-space-4: 1rem;
+  --cy-space-6: 1.5rem;
+  --cy-space-8: 2rem;
+  --cy-space-12: 3rem;
+  --cy-space-20: 5rem;
+
+  --cy-radius-sm: 4px;
+  --cy-radius-lg: 8px;
+  --cy-radius-xl: 12px;
+  --cy-radius-2xl: 16px;
+  --cy-radius-3xl: 24px;
+  --cy-radius-full: 9999px;
+
+  --cy-transition-fast: 150ms ease;
+  --cy-transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --cy-transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  --cy-blur-sm: blur(8px);
+  --cy-blur-md: blur(12px);
+  --cy-blur-lg: blur(20px);
+
+  --cy-z-base: 0;
+  --cy-z-content: 10;
+  --cy-z-header: 50;
+  --cy-z-hellobar: 60;
+  --cy-z-dropdown: 100;
+  --cy-z-mobile-menu: 500;
+  --cy-z-modal: 1000;
+  --cy-z-overlay: 9999;
+}
+
+/*
+ * RGB triplets pour Tailwind opacity (pattern shadcn).
+ * Utilisés via `rgb(var(--xxx-rgb) / <alpha-value>)` dans tailwind.config.
+ * Constantes (non-themables, vraies couleurs).
+ */
+:root {
+  --cy-green-300-rgb: 116 255 197;
+  --cy-green-400-rgb: 48 248 165;
+  --cy-green-500-rgb: 5 211 126;
+  --cy-deep-700-rgb: 1 71 81;
+  --cy-deep-950-rgb: 3 7 18;
+  --cy-success-rgb: 16 185 129;
+  --cy-error-rgb: 239 68 68;
+  --cy-warning-rgb: 245 158 11;
+  --cy-info-rgb: 5 211 126;
+}
+
+[data-theme='dark'] {
+  --cy-bg: var(--cy-deep-950);
+  --cy-bg-elevated: #0a1019;
+  --cy-bg-code: #06090f;
+  --cy-bg-muted: var(--cy-gray-800);
+  --cy-text-primary: #ffffff;
+  --cy-text-secondary: var(--cy-gray-400);
+  --cy-text-tertiary: var(--cy-gray-500);
+  --cy-text-accent: var(--cy-green-400);
+  --cy-border: var(--cy-gray-800);
+  --cy-border-subtle: var(--cy-gray-800);
+
+  /* RGB triplets thémables (utilisés par les classes shadcn avec opacity) */
+  --cy-bg-rgb: 3 7 18;
+  --cy-bg-elevated-rgb: 10 16 25;
+  --cy-bg-muted-rgb: 31 41 55;
+  --cy-text-primary-rgb: 255 255 255;
+  --cy-text-secondary-rgb: 156 163 175;
+  --cy-border-rgb: 31 41 55;
+
+  /* Shadows neutres — opacités hautes sur fond sombre */
+  --cy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --cy-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --cy-shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --cy-shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+[data-theme='light'] {
+  --cy-bg: #fafafa;
+  --cy-bg-elevated: #ffffff;
+  --cy-bg-code: #f5f5f7;
+  --cy-bg-muted: #f0f0f3;
+  --cy-text-primary: var(--cy-deep-950);
+  --cy-text-secondary: var(--cy-gray-600);
+  --cy-text-tertiary: var(--cy-gray-500);
+  --cy-text-accent: var(--cy-green-700);
+  --cy-border: #e5e7eb;
+  --cy-border-subtle: #f0f0f3;
+
+  /* RGB triplets thémables */
+  --cy-bg-rgb: 250 250 250;
+  --cy-bg-elevated-rgb: 255 255 255;
+  --cy-bg-muted-rgb: 240 240 243;
+  --cy-text-primary-rgb: 3 7 18;
+  --cy-text-secondary-rgb: 75 85 99;
+  --cy-border-rgb: 229 231 235;
+
+  /* Shadows neutres — opacités basses sur fond clair pour rester subtiles */
+  --cy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --cy-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --cy-shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+  --cy-shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.18);
+}

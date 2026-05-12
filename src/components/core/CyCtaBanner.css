@@ -1,0 +1,89 @@
+/* ============================================================
+   CyCtaBanner - banner CTA pleine largeur, signature Cyrano
+   ============================================================ */
+
+.cy-cta-banner {
+  padding: 40px 0;
+}
+
+.cy-cta-banner__shell {
+  position: relative;
+  margin: 0 auto;
+  max-width: 960px;
+  border-radius: var(--cy-radius-3xl);
+  padding: clamp(40px, 5vw, 64px) clamp(20px, 5vw, 56px);
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid rgba(5, 211, 126, 0.35);
+  background: var(--cy-deep-950);
+  box-shadow:
+    0 0 60px rgba(5, 211, 126, 0.08),
+    0 30px 80px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
+.cy-cta-banner--plain .cy-cta-banner__shell {
+  background: var(--cy-bg-elevated);
+}
+
+.cy-cta-banner__eyebrow {
+  display: inline-flex;
+  justify-content: center;
+  font-family: var(--cy-font-body);
+  font-size: var(--cy-text-xs);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cy-green-400);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.cy-cta-banner__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--cy-font-heading);
+  font-size: 36px;
+  line-height: 1.1;
+  letter-spacing: var(--cy-tracking-tight);
+  font-weight: 700;
+  max-width: 22ch;
+  margin: 0 auto;
+  text-wrap: balance;
+  color: var(--cy-text-primary);
+}
+
+@media (max-width: 1023px) {
+  .cy-cta-banner__title { font-size: 32px; }
+}
+@media (max-width: 639px) {
+  .cy-cta-banner__title { font-size: 28px; }
+}
+
+.cy-cta-banner__sub {
+  position: relative;
+  z-index: 1;
+  margin: 18px auto 28px;
+  max-width: 56ch;
+  color: var(--cy-text-secondary);
+  font-size: var(--cy-text-lg);
+  line-height: 1.6;
+}
+
+@media (max-width: 639px) {
+  .cy-cta-banner__sub { font-size: var(--cy-text-base); }
+}
+
+.cy-cta-banner__strip {
+  position: relative;
+  z-index: 1;
+  margin: 28px auto;
+}
+
+.cy-cta-banner__cta {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  margin-top: 12px;
+}

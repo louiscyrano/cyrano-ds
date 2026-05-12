@@ -1,0 +1,66 @@
+/* Hamburger animé : 3 traits → croix au open */
+.cy-menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--cy-border);
+  border-radius: var(--cy-radius-lg);
+  background: var(--cy-bg-elevated);
+  color: var(--cy-text-secondary);
+  cursor: pointer;
+  transition:
+    color var(--cy-transition-base),
+    background var(--cy-transition-base),
+    border-color var(--cy-transition-base),
+    transform var(--cy-transition-base);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+}
+
+.cy-menu-toggle:hover {
+  color: var(--cy-green-500);
+  border-color: var(--cy-green-500);
+  background: rgb(var(--cy-green-500-rgb) / 0.08);
+}
+
+.cy-menu-toggle:active {
+  transform: scale(0.96);
+}
+
+.cy-menu-toggle svg {
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+
+.cy-menu-toggle__path {
+  transform-origin: center;
+  transition:
+    transform 300ms cubic-bezier(0.5, 0.85, 0.25, 1.1);
+}
+
+.cy-menu-toggle__path--top {
+  transform: translateY(-7px);
+}
+
+.cy-menu-toggle__path--bottom {
+  transform: translateY(7px);
+}
+
+.cy-menu-toggle__path--middle {
+  transition: transform 300ms cubic-bezier(0.5, 0.85, 0.25, 1.8);
+}
+
+.cy-menu-toggle[aria-expanded='true'] .cy-menu-toggle__path--top {
+  transform: translateY(0) rotate(315deg);
+}
+
+.cy-menu-toggle[aria-expanded='true'] .cy-menu-toggle__path--middle {
+  transform: rotate(45deg);
+}
+
+.cy-menu-toggle[aria-expanded='true'] .cy-menu-toggle__path--bottom {
+  transform: translateY(0) rotate(135deg);
+}
