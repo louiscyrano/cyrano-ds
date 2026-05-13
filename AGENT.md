@@ -17,8 +17,10 @@ Pas de doc qui dérive du code, pas de code qui dérive de la doc.
 ## Imports types
 
 ```tsx
-// Toujours via le re-export central
-import { CyButton, CyCard, CyInput, AppButton, AppDialog, useToasts } from '@/components';
+// Imports séparés par couche (discipline DS, le barrel global est déprécié)
+import { CyButton, CyCard, CyInput } from '@/components/core';
+import { CyCtaBanner, CySecondaryHero } from '@/components/landing'; // pages marketing
+import { AppButton, AppDialog, useToasts } from '@/components/app';   // dashboards
 
 // Icônes : lucide-react UNIQUEMENT
 import { Download, Mail, Info, ArrowRight } from 'lucide-react';
@@ -29,18 +31,78 @@ import { cn } from '@/lib/utils';
 
 ---
 
-## 1. Architecture (2 couches)
+## Fichiers de référence
+
+- **AGENT.md** (ce fichier) : manuel de référence complet pour générer du code.
+- **prompts/system-prompt.md** : règles absolues condensées. Charge par défaut.
+- **DESIGN_SYSTEM.md** : doc humaine longue (non destinée à l'IA).
+- **ds-index.json** : inventaire machine-readable auto-généré (composants par couche + tokens groupés). Pour un résumé compact (3KB) au lieu de relire 25KB de manuel. Régénérer avec `npm run ds:gen` après toute modif d'export.
+- **Preview** : `npm run dev` puis http://localhost:3000.
+
+## Scripts utilitaires
+
+```bash
+npm run ds:gen            # Régénère ds-index.json depuis src/
+npm run ds:check-tokens   # Lint : aucun hex hardcodé hors tokens.css
+npm run ds:check          # Combinés (tokens + tsc --noEmit)
+```
+
+Lance `npm run ds:check` avant de proposer un PR pour vérifier qu'aucune couleur n'a été inlinée par erreur.
+
+---
+
+## Carte d'auto-routage
+
+Avant d'écrire, identifie ton besoin et va directement à la bonne section.
+
+| Tu veux… | Tu utilises… | Section |
+|---|---|---|
+| Un bouton sur une landing | `CyButton`, `CyAnimatedButton` | §5 |
+| Un bouton dans un dashboard | `AppButton` (`variant` × `size`) | §6 |
+| Un input / formulaire | `CyInput`, `CyTextarea`, `CyStatus` (erreurs) | §5 |
+| Un sélecteur < 10 options | `AppSelect` | §6 |
+| Un sélecteur > 10 options + recherche | `AppCombobox` | §6 |
+| Un menu contextuel (actions) | `AppDropdownMenu` | §6 |
+| Un popover (filtres, mini-form, date) | `AppPopover` | §6 |
+| Un tooltip (texte court d'aide) | `Tooltip` | §6 |
+| Une modale d'édition | `AppDialog` | §6 |
+| Une confirmation destructive | `AppAlertDialog` (pas Dialog) | §6 |
+| Un drawer mobile / panneau de détail | `AppSheet` (`side` : right/left/top/bottom) | §6 |
+| Un toast / notification éphémère | `useToasts()` | §6 |
+| Une table de données | `AppDataTable` (ou `AppTable` primitives) | §6 |
+| Un layout dashboard (rail + panel) | `AppSidebar` | §6 |
+| Un effet visuel léger (gradient text, scroll hint, live dot, reveal) | `CyGradientText`, `CyScrollHint`, `CyLiveDot`, `CyReveal` | §5 (core) |
+| Un background animé lourd (WebGL ou CSS blobs) | `CyShaderBg`, `CyAuroraBg` | §5.1 (landing) |
+| Un hero secondaire de page marketing | `CySecondaryHero` | §5.1 (landing) |
+| Une roadmap visuelle (pipeline d'étapes) | `CyRoadmapStrip` | §5.1 (landing) |
+| Une bannière CTA fin de page marketing | `CyCtaBanner` | §5.1 (landing) |
+| Un token de couleur / spacing / ombre | `var(--cy-*)` ou classe Tailwind mappée | §3 |
+| Une ombre verte (CTA, focus) | `var(--cy-shadow-green-sm/md/lg/glow)` | §3 |
+
+**Si rien ne match exactement** : lis §7 "Quand utiliser quoi" pour arbitrer. Si vraiment rien : crée dans `app/`, jamais dans `core/`.
+
+---
+
+## 1. Architecture (3 couches)
 
 ```
 src/components/
-├── core/   ← primitives universelles (apps + landings). Inline styles + tokens CSS.
-└── app/    ← additif pour surfaces interactives (dashboards). Tailwind + cn helper.
+├── core/      ← primitives universelles (apps + landings). Inline styles + tokens CSS.
+├── landing/   ← composites visuels lourds (WebGL, blobs CSS animés, heroes, banners).
+└── app/       ← additif pour surfaces interactives (dashboards). Tailwind + cn helper.
 ```
 
-- Réutilise un `core/` avant d'en créer un nouveau.
-- Une **landing** utilise UNIQUEMENT `core/`. Un **dashboard** combine `core/` + `app/`.
-- `app/` peut importer `core/`. **`core/` ne peut JAMAIS importer `app/`** (cycle interdit).
-- Si un composant est utile aux apps ET aux landings → il appartient à `core/`.
+**Règles de combinaison** :
+- Une **landing** (site marketing, lead magnet, cas client) combine `core/` + `landing/`.
+- Un **dashboard** (app interne, outil) combine `core/` + `app/`.
+- **Jamais croiser** `landing/` et `app/` dans une même surface.
+
+**Règles de dépendance** :
+- `core/` est importable partout.
+- `landing/` peut importer `core/`. `app/` peut importer `core/`.
+- `core/` ne peut **JAMAIS** importer `landing/` ou `app/` (cycle interdit).
+- `app/` ne doit **pas** importer `landing/` (séparation des préoccupations).
+- Si un composant est utile aux deux usages (apps ET landings) → il appartient à `core/`.
 
 ---
 
@@ -278,6 +340,24 @@ Wrapper Radix.
 </AppSelect>
 ```
 
+### AppCombobox
+Sélecteur avec recherche (cmdk + AppPopover). À utiliser dès >10 options ou besoin de filtre.
+`options: { value, label }[]`, `value?`, `onValueChange?`, `placeholder?`, `searchPlaceholder?`, `emptyMessage?`, `disabled?`, `trigger?` (custom).
+```tsx
+const [value, setValue] = useState<string>();
+<AppCombobox
+  options={[
+    { value: 'louis', label: 'Louis Orliange' },
+    { value: 'pierre', label: 'Pierre Felut-Paris' },
+  ]}
+  value={value}
+  onValueChange={setValue}
+  placeholder="Assigner à..."
+/>
+```
+
+Pour cas avancés (palette Cmd+K, multi-section, regroupement) : utiliser les primitives `AppCommand`, `AppCommandInput`, `AppCommandList`, `AppCommandEmpty`, `AppCommandGroup`, `AppCommandItem`, `AppCommandSeparator`.
+
 ### AppTabs (composé)
 `variant: 'default' | 'underline'`. Sous-composants : `AppTabsList`, `AppTabsTab`, `AppTabsPanel`.
 ```tsx
@@ -312,19 +392,71 @@ Radix + drill-down (`AppDropdownMenuPage` / `AppDropdownMenuPageTrigger`). Items
 </AppDropdownMenu>
 ```
 
+### AppPopover (composé)
+Radix Popover. Pour filtres contextuels, mini-formulaires, date pickers. Plus léger qu'un Dialog (pas de backdrop), plus riche qu'un Tooltip (interactif). Composés : `AppPopover` + `AppPopoverTrigger` (`asChild`) + `AppPopoverContent` (`align?`, `sideOffset?`) + `AppPopoverClose` + `AppPopoverAnchor`.
+```tsx
+<AppPopover>
+  <AppPopoverTrigger asChild><AppButton variant="outline">Filtrer</AppButton></AppPopoverTrigger>
+  <AppPopoverContent>
+    <label className="flex items-center gap-2"><AppCheckbox /> Actives</label>
+  </AppPopoverContent>
+</AppPopover>
+```
+
 ### AppDialog (composé)
-`AppDialogTrigger` / `Content` / `Header` (close X auto, `hideCloseButton?`) / `Body` / `Footer` / `Title` / `Description` / `Close`.
+Pour formulaires d'édition, dialogues de saisie. Close en X dans le header par défaut (`hideCloseButton?` pour le masquer). Composés : `AppDialogTrigger` / `Content` / `Header` / `Body` / `Footer` / `Title` / `Description` / `Close`.
 ```tsx
 <AppDialog>
-  <AppDialogTrigger asChild><AppButton>Ouvrir</AppButton></AppDialogTrigger>
+  <AppDialogTrigger asChild><AppButton>Modifier</AppButton></AppDialogTrigger>
   <AppDialogContent>
     <AppDialogHeader>
-      <AppDialogTitle>Confirmation</AppDialogTitle>
-      <AppDialogDescription>Cette action est irréversible.</AppDialogDescription>
+      <AppDialogTitle>Modifier le profil</AppDialogTitle>
+      <AppDialogDescription>Met à jour ton nom et ton email.</AppDialogDescription>
     </AppDialogHeader>
-    <AppDialogFooter><AppButton variant="destructive">Supprimer</AppButton></AppDialogFooter>
+    <AppDialogBody><CyInput label="Nom" /></AppDialogBody>
+    <AppDialogFooter>
+      <AppDialogClose asChild><AppButton variant="outline">Annuler</AppButton></AppDialogClose>
+      <AppButton>Enregistrer</AppButton>
+    </AppDialogFooter>
   </AppDialogContent>
 </AppDialog>
+```
+
+### AppAlertDialog (composé)
+**Pour confirmations destructives ou critiques** (suppression, déconnexion, validation finale). Différences vs `AppDialog` : `role="alertdialog"` (annoncé aux lecteurs d'écran), pas de fermeture par clic outside, pas de croix close, choix explicite entre `Cancel` et `Action`. Composés : `AppAlertDialogTrigger` / `Content` / `Header` / `Body` / `Footer` / `Title` / `Description` / `Action` / `Cancel`.
+```tsx
+<AppAlertDialog>
+  <AppAlertDialogTrigger asChild><AppButton variant="destructive">Supprimer</AppButton></AppAlertDialogTrigger>
+  <AppAlertDialogContent>
+    <AppAlertDialogHeader>
+      <AppAlertDialogTitle>Supprimer cette tâche ?</AppAlertDialogTitle>
+      <AppAlertDialogDescription>Cette action est définitive.</AppAlertDialogDescription>
+    </AppAlertDialogHeader>
+    <AppAlertDialogFooter>
+      <AppAlertDialogCancel asChild><AppButton variant="outline">Annuler</AppButton></AppAlertDialogCancel>
+      <AppAlertDialogAction asChild><AppButton variant="destructive">Supprimer</AppButton></AppAlertDialogAction>
+    </AppAlertDialogFooter>
+  </AppAlertDialogContent>
+</AppAlertDialog>
+```
+
+### AppSheet (composé)
+Panneau coulissant ancré à un bord. Pour drawer mobile, panneau de détail latéral (clic sur row de DataTable), filtres avancés, navigation secondaire. 4 sides : `right` (défaut), `left`, `top`, `bottom`. Composés : `AppSheetTrigger` / `Content` (`side`, `hideCloseButton?`) / `Header` / `Body` (scrollable) / `Footer` / `Title` / `Description` / `Close`.
+```tsx
+<AppSheet>
+  <AppSheetTrigger asChild><AppButton variant="outline">Voir détails</AppButton></AppSheetTrigger>
+  <AppSheetContent side="right">
+    <AppSheetHeader>
+      <AppSheetTitle>Refactor du flux d'auth</AppSheetTitle>
+      <AppSheetDescription>Tâche assignée à Pierre.</AppSheetDescription>
+    </AppSheetHeader>
+    <AppSheetBody>...contenu...</AppSheetBody>
+    <AppSheetFooter>
+      <AppSheetClose asChild><AppButton variant="outline">Fermer</AppButton></AppSheetClose>
+      <AppButton>Enregistrer</AppButton>
+    </AppSheetFooter>
+  </AppSheetContent>
+</AppSheet>
 ```
 
 ### AppSidebar
@@ -495,6 +627,135 @@ Spinner inline → CySpinner
 </div>
 ```
 
+### Confirmation de suppression destructive
+
+```tsx
+const t = useToasts();
+
+<AppAlertDialog>
+  <AppAlertDialogTrigger asChild>
+    <AppButton variant="destructive" size="sm">Supprimer</AppButton>
+  </AppAlertDialogTrigger>
+  <AppAlertDialogContent>
+    <AppAlertDialogHeader>
+      <AppAlertDialogTitle>Supprimer cette tâche ?</AppAlertDialogTitle>
+      <AppAlertDialogDescription>
+        Cette action est définitive. La tâche et ses sous-tâches seront perdues.
+      </AppAlertDialogDescription>
+    </AppAlertDialogHeader>
+    <AppAlertDialogFooter>
+      <AppAlertDialogCancel asChild><AppButton variant="outline">Annuler</AppButton></AppAlertDialogCancel>
+      <AppAlertDialogAction asChild>
+        <AppButton variant="destructive" onClick={async () => {
+          await deleteTask(task.id);
+          t.success('Tâche supprimée');
+        }}>Supprimer</AppButton>
+      </AppAlertDialogAction>
+    </AppAlertDialogFooter>
+  </AppAlertDialogContent>
+</AppAlertDialog>
+```
+
+### Panneau de détail latéral (Sheet sur clic de row)
+
+```tsx
+const [openTask, setOpenTask] = useState<Task | null>(null);
+
+<AppDataTable
+  data={tasks}
+  columns={[
+    { key: 'title', label: 'Titre', render: (r) => (
+      <button onClick={() => setOpenTask(r)} className="text-left hover:underline">
+        {r.title}
+      </button>
+    )},
+    { key: 'assignee', label: 'Assigné' },
+  ]}
+/>
+
+<AppSheet open={!!openTask} onOpenChange={(o) => !o && setOpenTask(null)}>
+  <AppSheetContent side="right">
+    <AppSheetHeader>
+      <AppSheetTitle>{openTask?.title}</AppSheetTitle>
+      <AppSheetDescription>Assignée à {openTask?.assignee}</AppSheetDescription>
+    </AppSheetHeader>
+    <AppSheetBody>
+      <CyTextarea label="Description" defaultValue={openTask?.description} rows={6} />
+    </AppSheetBody>
+    <AppSheetFooter>
+      <AppSheetClose asChild><AppButton variant="outline">Fermer</AppButton></AppSheetClose>
+      <AppButton>Enregistrer</AppButton>
+    </AppSheetFooter>
+  </AppSheetContent>
+</AppSheet>
+```
+
+### Filtre rapide dans un Popover
+
+```tsx
+const [filters, setFilters] = useState({ active: true, done: false, archived: false });
+
+<AppPopover>
+  <AppPopoverTrigger asChild>
+    <AppButton variant="outline" size="sm">
+      <Filter size={14} /> Filtres
+    </AppButton>
+  </AppPopoverTrigger>
+  <AppPopoverContent align="start">
+    <div className="flex flex-col gap-2">
+      <div className="text-sm font-semibold">Statut</div>
+      {(['active', 'done', 'archived'] as const).map((k) => (
+        <label key={k} className="flex items-center gap-2 text-sm">
+          <AppCheckbox
+            checked={filters[k]}
+            onCheckedChange={(v) => setFilters({ ...filters, [k]: v === true })}
+          />
+          {k}
+        </label>
+      ))}
+    </div>
+  </AppPopoverContent>
+</AppPopover>
+```
+
+### Assignation utilisateur avec recherche (Combobox)
+
+```tsx
+const [assignee, setAssignee] = useState<string>();
+
+<AppCombobox
+  options={teamMembers.map((m) => ({ value: m.id, label: m.name }))}
+  value={assignee}
+  onValueChange={setAssignee}
+  placeholder="Assigner à..."
+  searchPlaceholder="Rechercher un membre..."
+  emptyMessage="Aucun membre trouvé."
+/>
+```
+
+### Layout complet dashboard (sidebar rail + main + détail)
+
+```tsx
+<div className="flex h-screen">
+  <AppSidebar
+    rail={[{ id: 'tasks', icon: <ListChecks />, label: 'Tâches' }]}
+    activeId="tasks"
+    onNavChange={setSection}
+    panelTitle="Tâches"
+    sections={[
+      { label: 'Mes vues', items: [{ id: 'today', label: "Aujourd'hui" }, { id: 'week', label: 'Cette semaine' }] },
+    ]}
+  />
+  <main className="flex-1 overflow-y-auto p-6">
+    <div className="mb-6 flex items-center justify-between">
+      <h1 className="font-heading text-2xl font-semibold">Tâches</h1>
+      <AppButton><Plus size={16} /> Nouvelle tâche</AppButton>
+    </div>
+    <AppDataTable data={tasks} columns={columns} />
+  </main>
+</div>
+```
+
 ---
 
 ## 8.1 Patterns responsive critiques
@@ -630,13 +891,16 @@ selon la taille de viewport.
 
 Avant de soumettre du code, vérifie :
 
-- [ ] Tous les imports viennent de `@/components` (jamais de chemin profond `'@/components/core/CyButton'`)
+- [ ] Imports séparés par couche : `@/components/core` / `@/components/landing` / `@/components/app` (jamais le barrel global `@/components`)
 - [ ] Toutes les icônes viennent de `lucide-react`
 - [ ] Aucun hex hardcodé hors `--cy-*` ou couleurs Tailwind mappées
 - [ ] Tous les composants utilisés existent dans les sections 5-6 (sinon : tu inventes, stop)
 - [ ] Au plus un `CyAnimatedButton` par vue
-- [ ] Pas d'import croisé `core/` ← `app/`
+- [ ] Pas d'import croisé entre `core/` / `landing/` / `app/` qui viole les règles §1
 - [ ] Focus visible sur tous les interactifs
+- [ ] **Si tu as ajouté ou modifié un composant dans `src/components/`** : lance `npm run ds:gen` pour régénérer `ds-index.json`. Sinon la doc machine-readable diverge du code.
+- [ ] **Si tu as ajouté un composant** : update aussi `src/docs/codeBlockImports.ts` (sets `KNOWN_*`) sinon les auto-imports CodeBlock ne le détecteront pas.
+- [ ] Lance `npm run ds:check` pour valider tokens + TS.
 
 ---
 

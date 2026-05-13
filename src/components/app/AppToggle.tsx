@@ -3,12 +3,19 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 
 type Props = {
+  /** Valeur contrôlée (utiliser avec `onChange`). Omettre pour un mode uncontrolled avec `defaultChecked`. */
   checked?: boolean;
+  /** Valeur initiale en mode uncontrolled. Ignoré si `checked` est fourni. Défaut `false`. */
   defaultChecked?: boolean;
+  /** Callback déclenché quand l'état change. Reçoit le nouveau booléen. */
   onChange?: (checked: boolean) => void;
+  /** Affiche les labels OFF / ON de part et d'autre du switch. Défaut `true`. */
   showLabels?: boolean;
+  /** Customisation des labels affichés. Défaut `{ off: 'OFF', on: 'ON' }`. */
   labels?: { off: string; on: string };
+  /** Désactive le toggle (cursor not-allowed, opacity 50). */
   disabled?: boolean;
+  /** Classes additionnelles sur le wrapper externe. */
   className?: string;
 };
 

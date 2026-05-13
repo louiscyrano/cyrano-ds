@@ -2,13 +2,21 @@ import React from 'react';
 import { CyBadge } from './CyBadge';
 
 type Props = {
+  /** Active la variante "featured" (bordure verte, halo vert, badge FEATURED en overlay top-left). */
   featured?: boolean;
+  /** URL de l'image en background du header (160px de haut). Si absente, fallback sur un gradient deep→green. */
   image?: string;
+  /** Texte alternatif pour l'image (a11y). */
   imageAlt?: string;
+  /** Tags affichés au-dessus du titre. Chaque string devient un CyBadge variant="outlined". */
   tags?: string[];
+  /** Titre de la card (h4 600 weight). */
   title?: string;
+  /** Description courte sous le titre, texte secondaire. */
   description?: string;
+  /** Élément d'action affiché en bas (typiquement un CyButton). */
   action?: React.ReactNode;
+  /** Classes additionnelles sur le wrapper externe. */
   className?: string;
 };
 

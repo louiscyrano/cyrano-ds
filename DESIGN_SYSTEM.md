@@ -1,6 +1,10 @@
 # Cyrano Design System
 
-Référence textuelle exhaustive. Consommable par les IAs (Cursor, Lovable, Claude Code) et les développeurs humains. Toute déviation = bug à corriger.
+> **Tu es une IA générant du code Cyrano ?** Ne lis pas ce fichier. Va dans [AGENT.md](AGENT.md). Il contient le manuel de référence (tokens, API exacte de chaque composant, recettes copy-paste, anti-patterns) en format optimisé pour la génération de code. Ce fichier-ci est la doc longue humaine, structurée pour lecture séquentielle.
+>
+> **Tu es un humain ?** Bienvenue. Tu peux aussi explorer visuellement via `npm run dev` (preview locale http://localhost:3000).
+
+Référence textuelle exhaustive. Toute déviation = bug à corriger.
 
 ---
 

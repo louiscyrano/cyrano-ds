@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
 type Props = {
+  /** Label affiché au-dessus du champ. Lié au input via htmlFor automatique. Omettre pour un input sans label visible. */
   label?: string;
+  /** Message d'erreur affiché en rouge sous le champ. Sa présence active l'état visuel d'erreur (border rouge, focus ring rouge). */
   error?: string;
+  /** Texte d'aide affiché en gris sous le champ. Ignoré si `error` est fourni. */
   hint?: string;
+  /** Icône (lucide-react, 18px) à gauche dans le wrapper input. Pour signaler le type de donnée (Mail, Lock, etc.). */
   iconLeft?: React.ReactNode;
+  /** Icône (lucide-react, 18px) à droite dans le wrapper input. Pour actions inline (clear, eye toggle, etc.). */
   iconRight?: React.ReactNode;
+  /** Classes additionnelles sur le wrapper externe (le `<div>` qui contient label + input + hint/error). */
   className?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { CyButton } from './CyButton';
+import { CyButton } from '../core/CyButton';
 import { CyAuroraBg } from './CyAuroraBg';
-import { CyGradientText } from './CyGradientText';
+import { CyGradientText } from '../core/CyGradientText';
 import { CyRoadmapStrip, type RoadmapStep } from './CyRoadmapStrip';
 import './CyCtaBanner.css';
 

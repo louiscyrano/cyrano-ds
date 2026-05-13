@@ -74,6 +74,52 @@ export {
   AppDialogDescription,
 } from './AppDialog';
 export {
+  AppAlertDialog,
+  AppAlertDialogTrigger,
+  AppAlertDialogPortal,
+  AppAlertDialogOverlay,
+  AppAlertDialogContent,
+  AppAlertDialogBody,
+  AppAlertDialogHeader,
+  AppAlertDialogFooter,
+  AppAlertDialogTitle,
+  AppAlertDialogDescription,
+  AppAlertDialogAction,
+  AppAlertDialogCancel,
+} from './AppAlertDialog';
+export {
+  AppPopover,
+  AppPopoverTrigger,
+  AppPopoverAnchor,
+  AppPopoverClose,
+  AppPopoverContent,
+} from './AppPopover';
+export {
+  AppSheet,
+  AppSheetTrigger,
+  AppSheetClose,
+  AppSheetPortal,
+  AppSheetOverlay,
+  AppSheetContent,
+  AppSheetHeader,
+  AppSheetBody,
+  AppSheetFooter,
+  AppSheetTitle,
+  AppSheetDescription,
+} from './AppSheet';
+export {
+  AppCommand,
+  AppCommandInput,
+  AppCommandList,
+  AppCommandEmpty,
+  AppCommandGroup,
+  AppCommandItem,
+  AppCommandSeparator,
+  AppCombobox,
+  type AppComboboxOption,
+  type AppComboboxProps,
+} from './AppCombobox';
+export {
   AppTable,
   AppTableHeader,
   AppTableBody,

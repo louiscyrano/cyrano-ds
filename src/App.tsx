@@ -19,6 +19,9 @@ import {
   ArrowUpRight,
   ArrowRight,
 } from 'lucide-react';
+// Imports DS Cyrano — séparés par couche (discipline core/app).
+// core/  : primitives landing-safe, utilisables seules sur le site marketing.
+// app/   : surfaces interactives dashboard-grade. JAMAIS importé sur une landing.
 import {
   CyButton,
   CyAnimatedButton,
@@ -30,16 +33,20 @@ import {
   CyLogo,
   CySpinner,
   CyMenuToggle,
-  CyShaderBg,
   CyLiveDot,
   CyLinkPill,
-  CyAuroraBg,
   CyGradientText,
   CyScrollHint,
   CyReveal,
+} from './components/core';
+import {
+  CyShaderBg,
+  CyAuroraBg,
   CyRoadmapStrip,
   CyCtaBanner,
   CySecondaryHero,
+} from './components/landing';
+import {
   AppCounterButton,
   Tooltip,
   TooltipTrigger,
@@ -86,15 +93,40 @@ import {
   AppDialogBody,
   AppDialogFooter,
   AppDialogClose,
+  AppAlertDialog,
+  AppAlertDialogTrigger,
+  AppAlertDialogContent,
+  AppAlertDialogHeader,
+  AppAlertDialogTitle,
+  AppAlertDialogDescription,
+  AppAlertDialogFooter,
+  AppAlertDialogAction,
+  AppAlertDialogCancel,
+  AppPopover,
+  AppPopoverTrigger,
+  AppPopoverContent,
+  AppPopoverClose,
+  AppSheet,
+  AppSheetTrigger,
+  AppSheetContent,
+  AppSheetHeader,
+  AppSheetTitle,
+  AppSheetDescription,
+  AppSheetBody,
+  AppSheetFooter,
+  AppSheetClose,
+  AppCombobox,
+  type AppComboboxOption,
   AppDataTable,
   type ColumnDef,
   AppAvatar,
   AppAvatarImage,
   AppAvatarFallback,
   AppSkeleton,
-} from './components';
+} from './components/app';
 import { Header } from './docs/Header';
 import { Sidebar } from './docs/Sidebar';
+import { ComponentToc } from './docs/ComponentToc';
 import { DocSection } from './docs/DocSection';
 import { DocSubSection } from './docs/DocSubSection';
 import { DocBlock } from './docs/DocBlock';
@@ -120,6 +152,7 @@ const App: React.FC = () => {
             padding: 48,
             maxWidth: 920,
             paddingBottom: 80,
+            minWidth: 0,
           }}
         >
           <p
@@ -137,18 +170,23 @@ const App: React.FC = () => {
             maintenir une cohérence visuelle et technique à travers tout le projet.
           </p>
 
+          {/* Fondations */}
           <ColorsSection />
           <TypographySection />
-          <ButtonsSection />
-          <AnimationsSection />
-          <ComponentsCoreSection />
-          <ComponentsAppSection />
           <LayoutSection />
-          <InteractionsSection />
+          <AnimationsSection />
           <ZIndexSection />
+          {/* Composants */}
+          <ButtonsSection />
+          <ComponentsCoreSection />
+          <ComponentsLandingSection />
+          <ComponentsAppSection />
+          <InteractionsSection />
+          {/* Brand & IA */}
           <BrandSection />
           <AIGuidelinesSection />
         </main>
+        <ComponentToc />
       </div>
     </>
   );
@@ -1109,30 +1147,6 @@ const ComponentsCoreSection: React.FC = () => {
       </DocSubSection>
 
       <DocSubSection
-        title="Background shader"
-        description="Background animé décoratif (Warp shader). Deux presets — brand (vert lumineux) et muted (sombre/discret) — × trois intensités — low / medium / high. Toujours sur un parent en position: relative. Un seul intensity='high' par page."
-      >
-        <DocBlock>
-          <div style={grid(2, 16)}>
-            <ShaderDemo preset="brand" intensity="medium" label="brand · medium" />
-            <ShaderDemo preset="muted" intensity="medium" label="muted · medium" />
-            <ShaderDemo preset="brand" intensity="low" label="brand · low" />
-            <ShaderDemo preset="brand" intensity="high" label="brand · high" />
-          </div>
-        </DocBlock>
-        <CodeBlock
-          lang="tsx"
-          code={`<div className="relative overflow-hidden rounded-3xl">
-  <CyShaderBg preset="brand" intensity="medium" />
-  <div className="relative z-10 p-12 text-white">
-    <h2>Démarrer maintenant</h2>
-    <CyAnimatedButton size="lg" href="/signup">Lancer</CyAnimatedButton>
-  </div>
-</div>`}
-        />
-      </DocSubSection>
-
-      <DocSubSection
         title="Live dot"
         description="Point animé pulse pour eyebrows, badges 'live', status indicators. 2.4s opacity 1 → 0.45 → 1. Respect de prefers-reduced-motion."
       >
@@ -1155,28 +1169,6 @@ const ComponentsCoreSection: React.FC = () => {
         <CodeBlock
           lang="tsx"
           code={`<CyLiveDot size={6} color="var(--cy-green-400)" pulse />`}
-        />
-      </DocSubSection>
-
-      <DocSubSection
-        title="Aurora background"
-        description="Fond animé pure CSS : 3 blobs verts qui dérivent + grain SVG + vignette. Pour cartes/banners premium. Différent de CyShaderBg (WebGL) : pas de lag GPU, parfait pour les cartes statiques."
-      >
-        <DocBlock>
-          <div style={grid(3, 16)}>
-            <AuroraDemo intensity="subtle" label="subtle" />
-            <AuroraDemo intensity="medium" label="medium" />
-            <AuroraDemo intensity="strong" label="strong" />
-          </div>
-        </DocBlock>
-        <CodeBlock
-          lang="tsx"
-          code={`<article style={{ position: 'relative', overflow: 'hidden', isolation: 'isolate' }}>
-  <CyAuroraBg intensity="medium" />
-  <div style={{ position: 'relative', zIndex: 1 }}>
-    {content}
-  </div>
-</article>`}
         />
       </DocSubSection>
 
@@ -1257,47 +1249,81 @@ const ComponentsCoreSection: React.FC = () => {
         />
       </DocSubSection>
 
-      <DocSubSection
-        title="Roadmap strip"
-        description="Strip horizontal de pills numérotées séparées par des flèches. Pour roadmaps, pipelines, parcours utilisateur, étapes d'un process. Desktop : une ligne. Mobile : wrap 3 par ligne."
-      >
-        <DocBlock>
-          <div style={{ padding: '40px 0' }}>
-            <CyRoadmapStrip
-              steps={[
-                { num: '01', label: 'Audit' },
-                { num: '02', label: 'Cibles' },
-                { num: '03', label: 'Messages' },
-                { num: '04', label: 'Campagne' },
-                { num: '05', label: 'Optimisation' },
-                { num: '06', label: 'Point mensuel' },
-              ]}
-            />
-          </div>
-        </DocBlock>
-        <CodeBlock
-          lang="tsx"
-          code={`<CyRoadmapStrip
-  steps={[
-    { num: '01', label: 'Audit' },
-    { num: '02', label: 'Cibles' },
-    { num: '03', label: 'Messages' },
-  ]}
-/>`}
-        />
-      </DocSubSection>
+    </DocSection>
+  );
+};
 
-      <DocSubSection
-        title="CTA banner"
-        description="Banner CTA section pleine largeur, signature Cyrano. Compose CyAuroraBg + CyGradientText + (optionnel) CyRoadmapStrip + CyButton. À placer entre 2 sections pour relancer l'attention."
-      >
-        <DocBlock>
-          <CyCtaBanner
-            eyebrow="La roadmap"
-            titleBefore="Comment ça se passe "
-            titleAccent="concrètement"
-            titleAfter=" ?"
-            subtitle="Votre roadmap Cyrano en 6 étapes, de la première campagne jusqu'au point stratégique mensuel."
+const ComponentsLandingSection: React.FC = () => (
+  <DocSection id="components-landing" title="Composants landing">
+    <p
+      style={{
+        fontFamily: 'var(--cy-font-body)',
+        fontSize: 'var(--cy-text-sm)',
+        color: 'var(--cy-text-secondary)',
+        lineHeight: 1.7,
+        marginBottom: 24,
+        maxWidth: 680,
+      }}
+    >
+      Composites spécifiques aux pages marketing (site Cyrano, lead magnets,
+      pages de cas clients). Combinent plusieurs primitives <code>core/</code> + effets visuels lourds (WebGL, blobs CSS animés).
+      Path : <code style={{ color: 'var(--cy-green-400)' }}>src/components/landing/</code>.
+      Un composant landing peut importer du core, jamais l'inverse. Les dashboards n'utilisent pas <code>landing/</code>.
+    </p>
+
+    <DocSubSection
+      title="Background shader"
+      description="Background animé décoratif (Warp shader). Deux presets — brand (vert lumineux) et muted (sombre/discret) — × trois intensités — low / medium / high. Toujours sur un parent en position: relative. Un seul intensity='high' par page."
+    >
+      <DocBlock>
+        <div style={grid(2, 16)}>
+          <ShaderDemo preset="brand" intensity="medium" label="brand · medium" />
+          <ShaderDemo preset="muted" intensity="medium" label="muted · medium" />
+          <ShaderDemo preset="brand" intensity="low" label="brand · low" />
+          <ShaderDemo preset="brand" intensity="high" label="brand · high" />
+        </div>
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<div className="relative overflow-hidden rounded-3xl">
+  <CyShaderBg preset="brand" intensity="medium" />
+  <div className="relative z-10 p-12 text-white">
+    <h2>Démarrer maintenant</h2>
+    <CyAnimatedButton size="lg" href="/signup">Lancer</CyAnimatedButton>
+  </div>
+</div>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="Aurora background"
+      description="Fond animé pure CSS : 3 blobs verts qui dérivent + grain SVG + vignette. Pour cartes/banners premium. Différent de CyShaderBg (WebGL) : pas de lag GPU, parfait pour les cartes statiques."
+    >
+      <DocBlock>
+        <div style={grid(3, 16)}>
+          <AuroraDemo intensity="subtle" label="subtle" />
+          <AuroraDemo intensity="medium" label="medium" />
+          <AuroraDemo intensity="strong" label="strong" />
+        </div>
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<article style={{ position: 'relative', overflow: 'hidden', isolation: 'isolate' }}>
+  <CyAuroraBg intensity="medium" />
+  <div style={{ position: 'relative', zIndex: 1 }}>
+    {content}
+  </div>
+</article>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="Roadmap strip"
+      description="Strip horizontal de pills numérotées séparées par des flèches. Pour roadmaps, pipelines, parcours utilisateur, étapes d'un process. Desktop : une ligne. Mobile : wrap 3 par ligne."
+    >
+      <DocBlock>
+        <div style={{ padding: '40px 0' }}>
+          <CyRoadmapStrip
             steps={[
               { num: '01', label: 'Audit' },
               { num: '02', label: 'Cibles' },
@@ -1306,14 +1332,48 @@ const ComponentsCoreSection: React.FC = () => {
               { num: '05', label: 'Optimisation' },
               { num: '06', label: 'Point mensuel' },
             ]}
-            buttonLabel="Découvrir"
-            href="#"
-            buttonIcon={<ArrowRight size={16} />}
           />
-        </DocBlock>
-        <CodeBlock
-          lang="tsx"
-          code={`<CyCtaBanner
+        </div>
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<CyRoadmapStrip
+  steps={[
+    { num: '01', label: 'Audit' },
+    { num: '02', label: 'Cibles' },
+    { num: '03', label: 'Messages' },
+  ]}
+/>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="CTA banner"
+      description="Banner CTA section pleine largeur, signature Cyrano. Compose CyAuroraBg + CyGradientText + (optionnel) CyRoadmapStrip + CyButton. À placer entre 2 sections pour relancer l'attention."
+    >
+      <DocBlock>
+        <CyCtaBanner
+          eyebrow="La roadmap"
+          titleBefore="Comment ça se passe "
+          titleAccent="concrètement"
+          titleAfter=" ?"
+          subtitle="Votre roadmap Cyrano en 6 étapes, de la première campagne jusqu'au point stratégique mensuel."
+          steps={[
+            { num: '01', label: 'Audit' },
+            { num: '02', label: 'Cibles' },
+            { num: '03', label: 'Messages' },
+            { num: '04', label: 'Campagne' },
+            { num: '05', label: 'Optimisation' },
+            { num: '06', label: 'Point mensuel' },
+          ]}
+          buttonLabel="Découvrir"
+          href="#"
+          buttonIcon={<ArrowRight size={16} />}
+        />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<CyCtaBanner
   eyebrow="La roadmap"
   titleBefore="Comment ça se passe "
   titleAccent="concrètement"
@@ -1323,32 +1383,32 @@ const ComponentsCoreSection: React.FC = () => {
   buttonLabel="Découvrir"
   href="/#agence"
 />`}
-        />
-      </DocSubSection>
+      />
+    </DocSubSection>
 
-      <DocSubSection
-        title="Secondary page hero"
-        description="Hero standard pour toutes les pages secondaires du site (/entreprise, /ressources/cas-clients, etc.). Eyebrow vert avec CyLiveDot + h1 (CyGradientText optionnel sur le mot porteur) + lead. Blob radial vert ambient en ::before. Slot rightSlot optionnel : si présent, bascule en grille 2-cols (1.05fr / 0.95fr, stack <960px)."
-      >
-        <DocBlock>
-          <CySecondaryHero
-            eyebrow={
-              <>
-                <CyLiveDot />
-                <span>Ressources · Cas clients</span>
-              </>
-            }
-            title={
-              <>
-                Comment on fait, <CyGradientText>vraiment</CyGradientText>.
-              </>
-            }
-            lead="Chaque cas client détaille la problématique, l'approche Cyrano, l'email envoyé, et les résultats chiffrés. Sans embellissement."
-          />
-        </DocBlock>
-        <CodeBlock
-          lang="tsx"
-          code={`<CySecondaryHero
+    <DocSubSection
+      title="Secondary page hero"
+      description="Hero standard pour toutes les pages secondaires du site (/entreprise, /ressources/cas-clients, etc.). Eyebrow vert avec CyLiveDot + h1 (CyGradientText optionnel sur le mot porteur) + lead. Blob radial vert ambient en ::before. Slot rightSlot optionnel : si présent, bascule en grille 2-cols (1.05fr / 0.95fr, stack <960px)."
+    >
+      <DocBlock>
+        <CySecondaryHero
+          eyebrow={
+            <>
+              <CyLiveDot />
+              <span>Ressources · Cas clients</span>
+            </>
+          }
+          title={
+            <>
+              Comment on fait, <CyGradientText>vraiment</CyGradientText>.
+            </>
+          }
+          lead="Chaque cas client détaille la problématique, l'approche Cyrano, l'email envoyé, et les résultats chiffrés. Sans embellissement."
+        />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<CySecondaryHero
   eyebrow={<><CyLiveDot /><span>Ressources · Cas clients</span></>}
   title={<>Comment on fait, <CyGradientText>vraiment</CyGradientText>.</>}
   lead="Chaque cas client détaille la problématique..."
@@ -1362,11 +1422,10 @@ const ComponentsCoreSection: React.FC = () => {
   ctas={<CyAnimatedButton>Discutons-en</CyAnimatedButton>}
   rightSlot={<MesPortraits />}
 />`}
-        />
-      </DocSubSection>
-    </DocSection>
-  );
-};
+      />
+    </DocSubSection>
+  </DocSection>
+);
 
 const AuroraDemo: React.FC<{
   intensity: 'subtle' | 'medium' | 'strong';
@@ -1590,6 +1649,30 @@ const ComponentsAppSection: React.FC = () => (
     <AppSelectItem value="est">America/NY (EST)</AppSelectItem>
   </AppSelectContent>
 </AppSelect>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="Combobox"
+      description="Sélecteur avec recherche dans une longue liste (cmdk + AppPopover). À utiliser quand Select devient inconfortable (>10 options) : assignation utilisateur, choix de projet, sélection de tag. Keyboard nav, filtre fuzzy, empty state."
+    >
+      <DocBlock>
+        <ComboboxDemo />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`const [value, setValue] = useState<string>();
+const options = [
+  { value: 'louis', label: 'Louis Orliange' },
+  { value: 'pierre', label: 'Pierre Felut-Paris' },
+];
+
+<AppCombobox
+  options={options}
+  value={value}
+  onValueChange={setValue}
+  placeholder="Assigner à..."
+/>`}
       />
     </DocSubSection>
 
@@ -1934,6 +2017,28 @@ const columns: ColumnDef<Lead>[] = [
     </DocSubSection>
 
     <DocSubSection
+      title="Popover"
+      description="Surface flottante ancrée à un trigger. Pour filtres contextuels, mini-formulaires, date pickers, contenu secondaire. Plus léger qu'un Dialog (pas de backdrop), plus riche qu'un Tooltip (interactif). Se ferme au clic outside ou Escape."
+    >
+      <DocBlock>
+        <PopoverDemo />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<AppPopover>
+  <AppPopoverTrigger asChild>
+    <AppButton variant="outline">Filtrer</AppButton>
+  </AppPopoverTrigger>
+  <AppPopoverContent>
+    <label className="flex items-center gap-2">
+      <AppCheckbox /> Actives uniquement
+    </label>
+  </AppPopoverContent>
+</AppPopover>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
       title="Dialog"
       description="Modal Radix avec header (bg muted + close X), body, footer (bg muted + boutons). Pour formulaires d'édition rapide, confirmations, dialogues de saisie. Backdrop blur au-dessus du contenu."
     >
@@ -1962,6 +2067,68 @@ const columns: ColumnDef<Lead>[] = [
     </AppDialogFooter>
   </AppDialogContent>
 </AppDialog>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="Sheet"
+      description="Panneau coulissant ancré à un bord. Pour drawer mobile, panneau de détail latéral (clic sur row de DataTable), filtres avancés, navigation secondaire. 4 sides : right (défaut), left, top, bottom. Animations slide selon le side."
+    >
+      <DocBlock>
+        <SheetDemo />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<AppSheet>
+  <AppSheetTrigger asChild>
+    <AppButton variant="outline">Voir détails</AppButton>
+  </AppSheetTrigger>
+  <AppSheetContent side="right">
+    <AppSheetHeader>
+      <AppSheetTitle>Détails de la tâche</AppSheetTitle>
+      <AppSheetDescription>Refactor du flux d'auth.</AppSheetDescription>
+    </AppSheetHeader>
+    <AppSheetBody>...contenu...</AppSheetBody>
+    <AppSheetFooter>
+      <AppSheetClose asChild>
+        <AppButton variant="outline">Fermer</AppButton>
+      </AppSheetClose>
+    </AppSheetFooter>
+  </AppSheetContent>
+</AppSheet>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
+      title="AlertDialog"
+      description="Confirmation forcée pour actions destructives ou critiques (suppression, déconnexion, validation finale). Radix AlertDialog : annoncé role=alertdialog aux lecteurs d'écran, pas de fermeture par clic outside, pas de croix close. Choix explicite obligatoire entre Cancel et Action."
+    >
+      <DocBlock>
+        <AlertDialogDemo />
+      </DocBlock>
+      <CodeBlock
+        lang="tsx"
+        code={`<AppAlertDialog>
+  <AppAlertDialogTrigger asChild>
+    <AppButton variant="destructive">Supprimer</AppButton>
+  </AppAlertDialogTrigger>
+  <AppAlertDialogContent>
+    <AppAlertDialogHeader>
+      <AppAlertDialogTitle>Supprimer cette tâche ?</AppAlertDialogTitle>
+      <AppAlertDialogDescription>
+        Cette action est définitive. La tâche et ses sous-tâches seront perdues.
+      </AppAlertDialogDescription>
+    </AppAlertDialogHeader>
+    <AppAlertDialogFooter>
+      <AppAlertDialogCancel asChild>
+        <AppButton variant="outline">Annuler</AppButton>
+      </AppAlertDialogCancel>
+      <AppAlertDialogAction asChild>
+        <AppButton variant="destructive">Supprimer</AppButton>
+      </AppAlertDialogAction>
+    </AppAlertDialogFooter>
+  </AppAlertDialogContent>
+</AppAlertDialog>`}
       />
     </DocSubSection>
 
@@ -2031,6 +2198,122 @@ const DataTableDemo: React.FC = () => {
   ];
 
   return <AppDataTable data={demoLeads} columns={columns} />;
+};
+
+const COMBOBOX_OPTIONS: ReadonlyArray<AppComboboxOption> = [
+  { value: 'louis', label: 'Louis Orliange' },
+  { value: 'pierre', label: 'Pierre Felut-Paris' },
+  { value: 'marc', label: 'Marc Dubois' },
+  { value: 'sophie', label: 'Sophie Lemaire' },
+  { value: 'thomas', label: 'Thomas Bertrand' },
+  { value: 'julie', label: 'Julie Moreau' },
+];
+
+const ComboboxDemo: React.FC = () => {
+  const [value, setValue] = React.useState<string | undefined>(undefined);
+  return (
+    <div style={{ maxWidth: 280 }}>
+      <AppCombobox
+        options={COMBOBOX_OPTIONS}
+        value={value}
+        onValueChange={setValue}
+        placeholder="Assigner à..."
+        searchPlaceholder="Rechercher un membre..."
+      />
+    </div>
+  );
+};
+
+const SheetDemo: React.FC = () => {
+  return (
+    <AppSheet>
+      <AppSheetTrigger asChild>
+        <AppButton variant="outline">Voir détails de la tâche</AppButton>
+      </AppSheetTrigger>
+      <AppSheetContent side="right">
+        <AppSheetHeader>
+          <AppSheetTitle>Refactor du flux d'auth</AppSheetTitle>
+          <AppSheetDescription>
+            Tâche assignée à Pierre, échéance vendredi.
+          </AppSheetDescription>
+        </AppSheetHeader>
+        <AppSheetBody>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <CyInput label="Titre" defaultValue="Refactor du flux d'auth" />
+            <CyTextarea
+              label="Description"
+              defaultValue="Migrer le flux d'auth vers Supabase + SSR."
+              rows={4}
+            />
+            <CyInput label="Échéance" type="date" defaultValue="2026-05-16" />
+          </div>
+        </AppSheetBody>
+        <AppSheetFooter>
+          <AppSheetClose asChild>
+            <AppButton variant="outline">Fermer</AppButton>
+          </AppSheetClose>
+          <AppButton>Enregistrer</AppButton>
+        </AppSheetFooter>
+      </AppSheetContent>
+    </AppSheet>
+  );
+};
+
+const PopoverDemo: React.FC = () => {
+  return (
+    <AppPopover>
+      <AppPopoverTrigger asChild>
+        <AppButton variant="outline">Filtrer les tâches</AppButton>
+      </AppPopoverTrigger>
+      <AppPopoverContent>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <div style={{ fontFamily: 'var(--cy-font-heading)', fontSize: 'var(--cy-text-sm)', fontWeight: 600 }}>
+            Statut
+          </div>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--cy-text-sm)' }}>
+            <AppCheckbox defaultChecked /> Actives
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--cy-text-sm)' }}>
+            <AppCheckbox /> Terminées
+          </label>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 'var(--cy-text-sm)' }}>
+            <AppCheckbox /> Archivées
+          </label>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 4 }}>
+            <AppPopoverClose asChild>
+              <AppButton size="sm">Appliquer</AppButton>
+            </AppPopoverClose>
+          </div>
+        </div>
+      </AppPopoverContent>
+    </AppPopover>
+  );
+};
+
+const AlertDialogDemo: React.FC = () => {
+  return (
+    <AppAlertDialog>
+      <AppAlertDialogTrigger asChild>
+        <AppButton variant="destructive">Supprimer la tâche</AppButton>
+      </AppAlertDialogTrigger>
+      <AppAlertDialogContent>
+        <AppAlertDialogHeader>
+          <AppAlertDialogTitle>Supprimer cette tâche ?</AppAlertDialogTitle>
+          <AppAlertDialogDescription>
+            Cette action est définitive. La tâche et ses sous-tâches seront perdues.
+          </AppAlertDialogDescription>
+        </AppAlertDialogHeader>
+        <AppAlertDialogFooter>
+          <AppAlertDialogCancel asChild>
+            <AppButton variant="outline">Annuler</AppButton>
+          </AppAlertDialogCancel>
+          <AppAlertDialogAction asChild>
+            <AppButton variant="destructive">Supprimer définitivement</AppButton>
+          </AppAlertDialogAction>
+        </AppAlertDialogFooter>
+      </AppAlertDialogContent>
+    </AppAlertDialog>
+  );
 };
 
 const DialogDemo: React.FC = () => {

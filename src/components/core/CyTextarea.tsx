@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 
 type Props = {
+  /** Label affiché au-dessus du champ. Lié au textarea via htmlFor automatique. Omettre pour un textarea sans label visible. */
   label?: string;
+  /** Message d'erreur affiché en rouge sous le champ. Sa présence active l'état visuel d'erreur (border rouge, focus ring rouge). */
   error?: string;
+  /** Texte d'aide affiché en gris sous le champ. Ignoré si `error` est fourni. */
   hint?: string;
+  /** Classes additionnelles sur le wrapper externe (le `<div>` qui contient label + textarea + hint/error). */
   className?: string;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 

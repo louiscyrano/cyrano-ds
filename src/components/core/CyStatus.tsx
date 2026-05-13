@@ -5,9 +5,13 @@ import { cn } from '@/lib/utils';
 type Type = 'success' | 'error' | 'warning' | 'info';
 
 type Props = {
+  /** Type de message. `success` (vert + CheckCircle), `error` (rouge + XCircle), `warning` (amber + AlertCircle), `info` (vert Cyrano + Info). Détermine icône + couleurs + soft pair de fond. */
   type: Type;
+  /** Titre du message (gras, première ligne). Obligatoire. */
   title: string;
+  /** Description optionnelle sous le titre (texte secondaire). */
   message?: string;
+  /** Classes additionnelles sur le wrapper externe. */
   className?: string;
 };
 

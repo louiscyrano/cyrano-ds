@@ -6,9 +6,14 @@ export type AppTabsVariant = 'default' | 'underline';
 
 const TabsContext = React.createContext<AppTabsVariant>('default');
 
+type AppTabsProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & {
+  /** Style visuel des onglets. `default` (pilule remplie sur fond muted), `underline` (souligné sur bordure inférieure). Défaut `default`. */
+  variant?: AppTabsVariant;
+};
+
 export const AppTabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root> & { variant?: AppTabsVariant }
+  AppTabsProps
 >(({ className, variant = 'default', ...props }, ref) => (
   <TabsContext.Provider value={variant}>
     <TabsPrimitive.Root

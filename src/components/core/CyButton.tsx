@@ -6,12 +6,19 @@ type Variant = 'primary' | 'icon' | 'secondary' | 'outlined' | 'ghost';
 type Size = 'sm' | 'md' | 'lg';
 
 type Props = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'type'> & {
+  /** Contenu du bouton (texte, JSX, ou ReactNode). Obligatoire. */
   children: React.ReactNode;
+  /** Style visuel. `primary` pour les CTA principaux (gradient vert, ombre verte), `icon` pour bouton compact avec icône, `secondary` neutre, `outlined` bordure seule, `ghost` sans fond. Défaut `primary`. */
   variant?: Variant;
+  /** Taille du bouton. `sm` (h36 minW143), `md` (h48 minW184), `lg` (h52 minW250). Défaut `md`. */
   size?: Size;
+  /** Icône (lucide-react) à afficher en plus du texte. Position contrôlée par `iconPosition`. */
   icon?: React.ReactNode;
+  /** Position de l'icône par rapport au texte. Défaut `left`. */
   iconPosition?: 'left' | 'right';
+  /** Affiche un spinner à la place du contenu et désactive le bouton. Pour les actions async. */
   loading?: boolean;
+  /** Comportement HTML standard. `submit` valide un formulaire parent, `button` n'a pas d'effet par défaut. Défaut `button`. */
   type?: 'button' | 'submit';
 };
 
@@ -33,14 +40,14 @@ const variantStyles: Record<Variant, React.CSSProperties> = {
   primary: {
     background: 'var(--cy-gradient-primary)',
     color: 'var(--cy-deep-950)',
-    boxShadow: '0 6px 20px rgb(var(--cy-green-500-rgb) / 0.4)',
+    boxShadow: 'var(--cy-shadow-green-md)',
     border: '1px solid transparent',
     borderRadius: 'var(--cy-radius-full)',
   },
   icon: {
     background: 'var(--cy-gradient-primary)',
     color: 'var(--cy-deep-950)',
-    boxShadow: '0 6px 20px rgb(var(--cy-green-500-rgb) / 0.4)',
+    boxShadow: 'var(--cy-shadow-green-md)',
     border: '1px solid transparent',
     borderRadius: 'var(--cy-radius-xl)',
   },

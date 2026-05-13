@@ -4,9 +4,13 @@ import { Star } from 'lucide-react';
 type Variant = 'default' | 'outlined' | 'featured' | 'success' | 'error' | 'warning';
 
 type Props = {
+  /** Contenu du badge (texte). */
   children: React.ReactNode;
+  /** Style visuel. `default` (vert clair), `outlined` (bordure verte, fond transparent), `featured` (étoile + fond deep, mise en avant), `success` (vert tonal), `error` (rouge tonal), `warning` (amber tonal). Défaut `default`. */
   variant?: Variant;
+  /** Icône (lucide-react) à afficher à gauche du texte. */
   icon?: React.ReactNode;
+  /** Classes additionnelles sur le span externe. */
   className?: string;
 };
 

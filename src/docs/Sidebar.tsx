@@ -1,21 +1,42 @@
 import React, { useEffect, useState } from 'react';
 
-const ITEMS: ReadonlyArray<{ id: string; label: string }> = [
-  { id: 'colors', label: 'Couleurs' },
-  { id: 'typography', label: 'Typographie' },
-  { id: 'buttons', label: 'Boutons' },
-  { id: 'animations', label: 'Animations' },
-  { id: 'components-core', label: 'Composants core' },
-  { id: 'components-app', label: 'Composants app' },
-  { id: 'layout', label: 'Layout & Spacing' },
-  { id: 'interactions', label: 'Interactions' },
-  { id: 'zindex', label: 'Z-Index' },
-  { id: 'brand', label: 'Brand' },
-  { id: 'ai-guidelines', label: 'Guidelines IA' },
+type Item = { id: string; label: string };
+type Group = { label: string; items: ReadonlyArray<Item> };
+
+const GROUPS: ReadonlyArray<Group> = [
+  {
+    label: 'Fondations',
+    items: [
+      { id: 'colors', label: 'Couleurs' },
+      { id: 'typography', label: 'Typographie' },
+      { id: 'layout', label: 'Layout & Spacing' },
+      { id: 'animations', label: 'Animations' },
+      { id: 'zindex', label: 'Z-Index' },
+    ],
+  },
+  {
+    label: 'Composants',
+    items: [
+      { id: 'buttons', label: 'Boutons' },
+      { id: 'components-core', label: 'Core (universel)' },
+      { id: 'components-landing', label: 'Landing (marketing)' },
+      { id: 'components-app', label: 'App (dashboard)' },
+      { id: 'interactions', label: 'Interactions' },
+    ],
+  },
+  {
+    label: 'Brand & IA',
+    items: [
+      { id: 'brand', label: 'Brand' },
+      { id: 'ai-guidelines', label: 'Guidelines IA' },
+    ],
+  },
 ];
 
+const ALL_IDS: ReadonlyArray<string> = GROUPS.flatMap((g) => g.items.map((i) => i.id));
+
 export const Sidebar: React.FC = () => {
-  const [active, setActive] = useState<string>(ITEMS[0]!.id);
+  const [active, setActive] = useState<string>(ALL_IDS[0]!);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -27,8 +48,8 @@ export const Sidebar: React.FC = () => {
       },
       { rootMargin: '-30% 0px -60% 0px', threshold: [0, 0.3, 0.6] },
     );
-    ITEMS.forEach((item) => {
-      const el = document.getElementById(item.id);
+    ALL_IDS.forEach((id) => {
+      const el = document.getElementById(id);
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
@@ -49,15 +70,46 @@ export const Sidebar: React.FC = () => {
       }}
     >
       <nav>
-        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
-          {ITEMS.map((item) => (
-            <SidebarItem key={item.id} id={item.id} label={item.label} active={item.id === active} />
-          ))}
-        </ul>
+        {GROUPS.map((group, idx) => (
+          <div key={group.label} style={{ marginTop: idx === 0 ? 0 : 24 }}>
+            <SidebarGroupLabel label={group.label} />
+            <ul
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 4,
+              }}
+            >
+              {group.items.map((item) => (
+                <SidebarItem key={item.id} id={item.id} label={item.label} active={item.id === active} />
+              ))}
+            </ul>
+          </div>
+        ))}
       </nav>
     </aside>
   );
 };
+
+const SidebarGroupLabel: React.FC<{ label: string }> = ({ label }) => (
+  <div
+    style={{
+      padding: '0 16px',
+      marginBottom: 8,
+      fontSize: 11,
+      fontWeight: 600,
+      letterSpacing: '0.08em',
+      textTransform: 'uppercase',
+      fontFamily: 'var(--cy-font-body)',
+      color: 'var(--cy-text-tertiary)',
+    }}
+  >
+    {label}
+  </div>
+);
 
 const SidebarItem: React.FC<{ id: string; label: string; active: boolean }> = ({ id, label, active }) => {
   const [hovered, setHovered] = useState(false);

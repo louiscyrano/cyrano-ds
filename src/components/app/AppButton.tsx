@@ -43,7 +43,28 @@ const appButtonVariants = cva(
 export interface AppButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof appButtonVariants> {
+  /** Si true, le bouton délègue son rendu au premier enfant (pattern Radix Slot). Permet d'envelopper un `<a>` ou un autre composant tout en gardant le style et le comportement. */
   asChild?: boolean;
+  /**
+   * Style visuel.
+   * - `default` : action principale (vert plein).
+   * - `destructive` : action dangereuse (rouge).
+   * - `outline` : action secondaire (bordure, fond transparent).
+   * - `secondary` : action neutre (fond muted).
+   * - `ghost` : action discrète (hover seul).
+   * - `link` : style hypertexte.
+   * Défaut `default`.
+   */
+  variant?: VariantProps<typeof appButtonVariants>['variant'];
+  /**
+   * Taille du bouton.
+   * - `sm` : compact (h-8, texte xs).
+   * - `default` : standard (h-9).
+   * - `lg` : prominent (h-10, padding large).
+   * - `icon` : carré (h-9 w-9, pour bouton avec icône seule).
+   * Défaut `default`.
+   */
+  size?: VariantProps<typeof appButtonVariants>['size'];
 }
 
 const AppButton = React.forwardRef<HTMLButtonElement, AppButtonProps>(

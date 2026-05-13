@@ -86,6 +86,18 @@
   --cy-blur-md: blur(12px);
   --cy-blur-lg: blur(20px);
 
+  /*
+   * Opacités sémantiques — préférer ces tokens aux valeurs ad-hoc.
+   * - disabled       : composants désactivés (boutons, inputs, items menu)
+   * - hover-overlay  : surcouche d'effet hover sur surface neutre
+   * - active-overlay : surcouche d'état actif (selected, pressed)
+   * - focus-ring     : opacité du ring de focus vert (3px ring)
+   */
+  --cy-opacity-disabled: 0.5;
+  --cy-opacity-hover-overlay: 0.08;
+  --cy-opacity-active-overlay: 0.12;
+  --cy-opacity-focus-ring: 0.2;
+
   --cy-z-base: 0;
   --cy-z-content: 10;
   --cy-z-header: 50;
@@ -145,6 +157,19 @@
   --cy-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
   --cy-shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.5);
   --cy-shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.6);
+
+  /*
+   * Shadows vertes — pour CTA primary, featured cards, états attention.
+   * Opacités hautes sur dark : la couleur saturée doit rester visible.
+   * - sm    : focus ring sur input/button (3px ring)
+   * - md    : CTA primary par défaut
+   * - lg    : CTA featured, animations d'attraction
+   * - glow  : effet halo pour mise en avant maximale
+   */
+  --cy-shadow-green-sm: 0 0 0 3px rgb(var(--cy-green-500-rgb) / 0.25);
+  --cy-shadow-green-md: 0 6px 20px rgb(var(--cy-green-500-rgb) / 0.4);
+  --cy-shadow-green-lg: 0 12px 32px rgb(var(--cy-green-500-rgb) / 0.5);
+  --cy-shadow-green-glow: 0 0 32px rgb(var(--cy-green-500-rgb) / 0.6);
 }
 
 [data-theme='light'] {
@@ -177,4 +202,10 @@
   --cy-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
   --cy-shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
   --cy-shadow-xl: 0 24px 64px rgba(0, 0, 0, 0.18);
+
+  /* Shadows vertes — opacités plus basses sur light pour rester douces */
+  --cy-shadow-green-sm: 0 0 0 3px rgb(var(--cy-green-500-rgb) / 0.18);
+  --cy-shadow-green-md: 0 6px 20px rgb(var(--cy-green-500-rgb) / 0.28);
+  --cy-shadow-green-lg: 0 12px 32px rgb(var(--cy-green-500-rgb) / 0.35);
+  --cy-shadow-green-glow: 0 0 32px rgb(var(--cy-green-500-rgb) / 0.4);
 }
