@@ -39,6 +39,7 @@ import {
   CyReveal,
   CyRoadmapStrip,
   CyCtaBanner,
+  CySecondaryHero,
   AppCounterButton,
   Tooltip,
   TooltipTrigger,
@@ -1263,6 +1264,45 @@ const ComponentsCoreSection: React.FC = () => {
   steps={[{ num: '01', label: 'Audit' }, ...]}
   buttonLabel="Découvrir"
   href="/#agence"
+/>`}
+        />
+      </DocSubSection>
+
+      <DocSubSection
+        title="Secondary page hero"
+        description="Hero standard pour toutes les pages secondaires du site (/entreprise, /ressources/cas-clients, etc.). Eyebrow vert avec CyLiveDot + h1 (CyGradientText optionnel sur le mot porteur) + lead. Blob radial vert ambient en ::before. Slot rightSlot optionnel : si présent, bascule en grille 2-cols (1.05fr / 0.95fr, stack <960px)."
+      >
+        <DocBlock>
+          <CySecondaryHero
+            eyebrow={
+              <>
+                <CyLiveDot />
+                <span>Ressources · Cas clients</span>
+              </>
+            }
+            title={
+              <>
+                Comment on fait, <CyGradientText>vraiment</CyGradientText>.
+              </>
+            }
+            lead="Chaque cas client détaille la problématique, l'approche Cyrano, l'email envoyé, et les résultats chiffrés. Sans embellissement."
+          />
+        </DocBlock>
+        <CodeBlock
+          lang="tsx"
+          code={`<CySecondaryHero
+  eyebrow={<><CyLiveDot /><span>Ressources · Cas clients</span></>}
+  title={<>Comment on fait, <CyGradientText>vraiment</CyGradientText>.</>}
+  lead="Chaque cas client détaille la problématique..."
+/>
+
+// Variante 2 colonnes : passer un rightSlot
+<CySecondaryHero
+  eyebrow={<><CyLiveDot /><span>L'agence IA</span></>}
+  title={<>Votre <CyGradientText>bras droit IA</CyGradientText>.</>}
+  lead="L'humain pilote, l'IA exécute."
+  ctas={<CyAnimatedButton>Discutons-en</CyAnimatedButton>}
+  rightSlot={<MesPortraits />}
 />`}
         />
       </DocSubSection>
