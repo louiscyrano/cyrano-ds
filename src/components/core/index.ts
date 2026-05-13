@@ -19,3 +19,5 @@ export { CyReveal } from './CyReveal';
 export { CyRoadmapStrip } from './CyRoadmapStrip';
 export type { RoadmapStep } from './CyRoadmapStrip';
 export { CyCtaBanner } from './CyCtaBanner';
+export { CySecondaryHero } from './CySecondaryHero';
+export type { CySecondaryHeroProps } from './CySecondaryHero';
