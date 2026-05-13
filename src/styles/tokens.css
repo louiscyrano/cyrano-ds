@@ -46,6 +46,7 @@
 
   --cy-font-heading: 'Poppins', -apple-system, sans-serif;
   --cy-font-body: 'Satoshi', -apple-system, sans-serif;
+  --cy-font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
 
   --cy-text-xs: 0.75rem;
   --cy-text-sm: 0.875rem;
