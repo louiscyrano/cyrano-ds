@@ -106,3 +106,12 @@
 .cy-animated--lg .cy-animated__fill { font-size: var(--cy-text-lg); padding: 0 28px; }
 
 @keyframes cy-rotate { to { --cy-angle: 360deg; } }
+
+@media (hover: none) {
+  .cy-animated__rotating-stroke,
+  .cy-animated__rotating-glow { opacity: 0; animation: none; }
+  .cy-animated__uniform-stroke { opacity: 1; }
+  .cy-animated__uniform-glow { opacity: 0.6; }
+  .cy-animated__fill { background: var(--cy-deep-900); }
+  .cy-animated:active { transform: scale(0.98); }
+}
