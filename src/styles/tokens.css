@@ -132,6 +132,13 @@
   --cy-text-secondary-rgb: 156 163 175;
   --cy-border-rgb: 31 41 55;
 
+  /* Shell decorative — fond utilisé par les wrappers décoratifs
+     (problem-shell sur la home, cards cas clients). Subtil mais visible
+     sur le bg de page. Thèmable via text-primary-rgb. */
+  --cy-bg-shell: rgb(var(--cy-text-primary-rgb) / 0.06);
+  --cy-bg-shell-hover: rgb(var(--cy-text-primary-rgb) / 0.10);
+  --cy-bg-shell-border: rgb(var(--cy-text-primary-rgb) / 0.08);
+
   /* Shadows neutres — opacités hautes sur fond sombre */
   --cy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --cy-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
@@ -158,6 +165,11 @@
   --cy-text-primary-rgb: 3 7 18;
   --cy-text-secondary-rgb: 75 85 99;
   --cy-border-rgb: 229 231 235;
+
+  /* Shell decorative — voir bloc dark */
+  --cy-bg-shell: rgb(var(--cy-text-primary-rgb) / 0.06);
+  --cy-bg-shell-hover: rgb(var(--cy-text-primary-rgb) / 0.10);
+  --cy-bg-shell-border: rgb(var(--cy-text-primary-rgb) / 0.08);
 
   /* Shadows neutres — opacités basses sur fond clair pour rester subtiles */
   --cy-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);

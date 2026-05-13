@@ -44,14 +44,7 @@
 @media (max-width: 767px) {
   .cy-roadmap-strip {
     flex-wrap: wrap;
-    gap: 8px;
-    max-width: 360px;
-  }
-  .cy-roadmap-strip__group {
-    flex: 0 0 calc(33.333% - 6px);
-    justify-content: center;
-  }
-  .cy-roadmap-strip__group .cy-roadmap-strip__arrow {
-    display: none;
+    gap: 6px 8px;
+    max-width: 100%;
   }
 }

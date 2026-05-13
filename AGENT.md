@@ -497,6 +497,120 @@ Spinner inline → CySpinner
 
 ---
 
+## 8.1 Patterns responsive critiques
+
+> Issus d'une passe responsive complète sur le site Cyrano (2026-05-13). Tout
+> composant DS ou page consumer doit respecter ces 8 patterns. Ignorer un seul
+> casse le responsive de façon souvent invisible jusqu'à ce qu'un viewport
+> spécifique le révèle.
+
+### 1. Cascade min-content sur wrappers
+
+Tout wrapper qui contient un enfant à `width: max-content` (marquees,
+scrollers horizontaux, tables larges, illustrations en grid fixe) doit avoir :
+
+```css
+.wrapper {
+  min-width: 0;
+  width: 100%;          /* explicite, pas auto */
+}
+```
+
+Sans ça, le wrapper prend la largeur max-content de son enfant (capped à
+max-width) et refuse de shrink en dessous. À 768 viewport, un `.wrap` avec
+`max-width: 1280px` peut rester à 1280 si un marquee interne pousse la
+cascade. Le `min-width: 0` brise la chaîne, le `width: 100%` force
+l'adaptation au parent.
+
+### 2. Jamais d'inline `style={{ padding }}` sur les containers
+
+Les inline styles **écrasent toutes les media queries CSS** (specificity
+infinie). Un `style={{ padding: '75px 64px' }}` sur un shell rend toute
+règle responsive invisible côté CSS — debugger en JSX, pas dans la
+stylesheet.
+
+Règle : padding/margin de structure = CSS uniquement. Réserver les inline
+styles à des valeurs runtime (états animés, calculs dynamiques).
+
+### 3. Sticky + ancestor `overflow: hidden`
+
+Un `position: sticky` est bloqué par un ancêtre en `overflow: hidden` (ou
+`clip`). Le sticky s'arrête à la frontière de cet ancêtre.
+
+Pattern fréquent : sections desktop avec scroll-stacking (`.diff-section`)
+ont `.diff-inner { overflow: hidden }` pour cropper l'animation. À
+mobile/tablet où le scroll-stacking est désactivé, il faut `overflow:
+visible` sur l'inner pour permettre aux titres sticky de fonctionner.
+
+### 4. Grid responsive avec `minmax(0, 1fr)`
+
+`grid-template-columns: 1fr` ne shrink pas en dessous du min-content de
+ses cellules. Utiliser `minmax(0, 1fr)` + `min-width: 0` sur les items :
+
+```css
+.grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2.2fr);
+}
+.grid > * { min-width: 0; }
+```
+
+### 5. Mobile 95% viewport
+
+Sur mobile (≤639px), le `.wrap` global passe à `padding: 0 10px` pour que
+le contenu occupe ~95% du viewport. Les cards internes doivent avoir un
+padding réduit (14-22px max, pas 32-40px desktop), sinon le double padding
+mange ~30% de la largeur.
+
+Si un wrapper est purement décoratif (un "shell" avec background + border
++ radius), il peut devenir transparent à mobile (`padding: 0; background:
+transparent; border: none`) pour donner toute la largeur aux cards
+internes.
+
+Token disponible pour les shells : `--cy-bg-shell`, `--cy-bg-shell-hover`,
+`--cy-bg-shell-border`.
+
+### 6. Sticky title fallback à mobile/tablet
+
+Les sections desktop avec scroll-stacking (titre fixe à gauche, cards
+animées à droite) se stackent verticalement en mobile/tablet. Le titre se
+retrouve tout en haut puis disparaît au scroll.
+
+Pattern : à mobile/tablet, rendre le titre sticky `top: 64px` (sous le
+header) avec un bg solide pour qu'il reste visible pendant le scroll des
+cards :
+
+```css
+@media (max-width: 1024px) {
+  .section-title-block {
+    position: sticky;
+    top: 64px;
+    z-index: 5;
+    background: var(--cy-bg);
+    padding: 16px 0 20px;
+  }
+}
+```
+
+### 7. Burger jusqu'à 1023px
+
+Le breakpoint hamburger standard est `max-width: 1023px`. À 768 viewport,
+une nav full avec 4-5 items wrap inévitablement. Le burger doit prendre
+le relais dès qu'on quitte le desktop strict (≥1024).
+
+### 8. Line-height mobile resserré
+
+Body et citations à `line-height: 1.4-1.7` desktop deviennent
+illisiblement aérés sur 375. À mobile :
+
+- Citations : `1.4 → 1.3`
+- FAQ answer / body long : `1.7 → 1.55`
+- Question FAQ : `1.5 → 1.3`
+
+Et réduire la font des questions/titres secondaires : `xl → lg → base`
+selon la taille de viewport.
+
+---
+
 ## 9. Anti-patterns
 
 - ❌ Sparkles, particules, magnetic pull, diamond spin, pulse glow agressifs sur les CTAs
