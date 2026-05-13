@@ -240,6 +240,28 @@ const ColorsSection: React.FC = () => (
     </DocSubSection>
 
     <DocSubSection
+      title="Surfaces décoratives (shell)"
+      description="Trois tokens pour les wrappers décoratifs (problem-shell sur la home, cards cas clients). Subtil mais visible sur le bg de page. Thémable via text-primary-rgb (dark = blanc 6%, light = noir 6%). À utiliser sur tout container qui sert de 'shell' visuel — pas sur les cartes interactives qui restent en --cy-bg-elevated."
+    >
+      <div style={grid(3, 16)}>
+        <ShellSwatch token="--cy-bg-shell" usage="Fond du wrapper au repos" />
+        <ShellSwatch token="--cy-bg-shell-hover" usage="Hover state des cards interactives" />
+        <ShellSwatch token="--cy-bg-shell-border" usage="Border subtle 1px sur le shell" />
+      </div>
+      <CodeBlock
+        lang="tsx"
+        code={`<section style={{
+  background: 'var(--cy-bg-shell)',
+  border: '1px solid var(--cy-bg-shell-border)',
+  borderRadius: 'var(--cy-radius-3xl)',
+  padding: 64,
+}}>
+  {/* contenu */}
+</section>`}
+      />
+    </DocSubSection>
+
+    <DocSubSection
       title="Shadows / élévation"
       description="Quatre paliers d'ombres neutres, thémables (opacités fortes en dark, douces en light). Toujours via tokens — jamais d'rgba(0,0,0,0.x) en dur dans les composants. Les ombres vertes des CTAs sont gérées dans les composants Cy* directement, pas en token DS."
     >
@@ -333,6 +355,42 @@ const GradientRow: React.FC<{ name: string; gradient: string; usage: string; cod
     >
       {code}
     </code>
+  </div>
+);
+
+const ShellSwatch: React.FC<{ token: string; usage: string }> = ({ token, usage }) => (
+  <div
+    style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 12,
+      padding: 20,
+      background: 'var(--cy-bg-elevated)',
+      border: '1px solid var(--cy-border)',
+      borderRadius: 'var(--cy-radius-xl)',
+    }}
+  >
+    <div
+      style={{
+        height: 64,
+        borderRadius: 'var(--cy-radius-lg)',
+        background: `var(${token})`,
+        border: token.includes('border') ? '1px solid currentColor' : '1px solid var(--cy-bg-shell-border)',
+        color: 'var(--cy-bg-shell-border)',
+      }}
+    />
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <code
+        style={{
+          fontFamily: 'ui-monospace, monospace',
+          fontSize: 11,
+          color: 'var(--cy-green-400)',
+        }}
+      >
+        {token}
+      </code>
+      <span style={{ fontSize: 'var(--cy-text-xs)', color: 'var(--cy-text-secondary)' }}>{usage}</span>
+    </div>
   </div>
 );
 
