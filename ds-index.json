@@ -1,7 +1,7 @@
 {
   "name": "cyrano-ds",
   "version": "1.0.0",
-  "generatedAt": "2026-05-13T17:19:31.680Z",
+  "generatedAt": "2026-05-22T18:15:08.445Z",
   "description": "Index machine-readable du DS Cyrano. Pour les règles de génération, voir AGENT.md. Pour la doc humaine, voir DESIGN_SYSTEM.md ou la preview locale (npm run dev).",
   "layers": {
     "core": {
@@ -165,7 +165,7 @@
     "Icônes : lucide-react uniquement"
   ],
   "tokens": {
-    "count": 117,
+    "count": 121,
     "grouped": {
       "colors": [
         "--cy-deep-600",
@@ -195,6 +195,10 @@
         "--cy-green-600",
         "--cy-green-700",
         "--cy-info",
+        "--cy-info-blue",
+        "--cy-info-blue-rgb",
+        "--cy-info-blue-soft-bg",
+        "--cy-info-blue-soft-border",
         "--cy-info-rgb",
         "--cy-info-soft-bg",
         "--cy-info-soft-border",

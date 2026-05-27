@@ -78,6 +78,7 @@ Avant d'écrire, identifie ton besoin et va directement à la bonne section.
 | Une bannière CTA fin de page marketing | `CyCtaBanner` | §5.1 (landing) |
 | Un token de couleur / spacing / ombre | `var(--cy-*)` ou classe Tailwind mappée | §3 |
 | Une ombre verte (CTA, focus) | `var(--cy-shadow-green-sm/md/lg/glow)` | §3 |
+| Un élément info neutre dans une app (pas un état signifiant) | `var(--cy-info-blue)` + `--cy-info-blue-soft-bg/border` | §3 |
 
 **Si rien ne match exactement** : lis §7 "Quand utiliser quoi" pour arbitrer. Si vraiment rien : crée dans `app/`, jamais dans `core/`.
 
@@ -124,6 +125,7 @@ src/components/
 | `--cy-deep-600` → `--cy-deep-950` | `#016c78` → `#030712` | Sections premium, fonds dark |
 | `--cy-gray-300` → `--cy-gray-900` | `#d1d5db` → `#111827` | Neutres |
 | `--cy-success` `--cy-error` `--cy-warning` `--cy-info` | `#10b981` `#ef4444` `#f59e0b` `#05d37e` | États |
+| `--cy-info-blue` | `#60a5fa` | Info neutre bleu — couche `app/` uniquement, pour éléments info qui ne doivent pas être confondus avec un état signifiant vert (ex: priorité P3, node Loopback Cytask) |
 
 ### Mapping Tailwind shadcn → Cyrano (couche app)
 

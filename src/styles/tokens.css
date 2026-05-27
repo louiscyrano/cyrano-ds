@@ -25,6 +25,16 @@
   --cy-info: var(--cy-green-500);
 
   /*
+   * --cy-info-blue : couleur info neutre bleue.
+   * À utiliser dans la couche app/ pour les éléments info qui ne doivent PAS
+   * être confondus avec un état signifiant (le vert est réservé à ready /
+   * action principale / focus / toggle ON). Exemples actuels : priorité P3
+   * sur les TaskCards Cytask, node Loopback dans les timelines de workflow.
+   * Distinct de --cy-info (vert) qui sert aux banners "info" des landings.
+   */
+  --cy-info-blue: #60a5fa;
+
+  /*
    * Soft pairs (bg + border) pour les status / banners.
    * color-mix résout au runtime contre --cy-bg (thémable) — le même token
    * marche en dark et light sans branche supplémentaire.
@@ -37,6 +47,8 @@
   --cy-warning-soft-border: color-mix(in srgb, var(--cy-warning) 25%, var(--cy-bg));
   --cy-info-soft-bg: color-mix(in srgb, var(--cy-info) 10%, var(--cy-bg));
   --cy-info-soft-border: color-mix(in srgb, var(--cy-info) 25%, var(--cy-bg));
+  --cy-info-blue-soft-bg: color-mix(in srgb, var(--cy-info-blue) 10%, var(--cy-bg));
+  --cy-info-blue-soft-border: color-mix(in srgb, var(--cy-info-blue) 25%, var(--cy-bg));
 
   --cy-gradient-primary: linear-gradient(to right, var(--cy-green-400), var(--cy-green-500));
   --cy-gradient-alt: linear-gradient(to right, var(--cy-green-500), var(--cy-green-600));
@@ -123,6 +135,7 @@
   --cy-error-rgb: 239 68 68;
   --cy-warning-rgb: 245 158 11;
   --cy-info-rgb: 5 211 126;
+  --cy-info-blue-rgb: 96 165 250;
 }
 
 [data-theme='dark'] {
