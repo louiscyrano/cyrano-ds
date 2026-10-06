@@ -908,14 +908,14 @@ Avant de soumettre du code, vérifie :
 
 ## 11. Migration DS → projet consumer (Next.js App Router)
 
-Le DS Cyrano est servi en **Vite** (CSR pur). Les projets consumer (site Cyrano, futurs dashboards) tournent en **Next.js App Router** où le SSR est le défaut. Quand un composant `Cy*` est copié depuis `business/ds/src/components/core/` vers `src/components/core/` du projet Next, il faut **systématiquement ajouter `'use client';` en première ligne du `.tsx`**.
+Le DS Cyrano est servi en **Vite** (CSR pur). Les projets consumer (site Cyrano, futurs dashboards) tournent en **Next.js App Router** où le SSR est le défaut. Quand un composant `Cy*` est copié depuis `src/components/core/` de ce dépôt (`~/Code/cyrano-ds`) vers `src/components/core/` du projet Next, il faut **systématiquement ajouter `'use client';` en première ligne du `.tsx`**.
 
 **Pourquoi** : Next.js considère tout composant comme Server Component par défaut. Tout hook React (`useState`, `useEffect`, `useRef`) ou event handler (`onClick`, `onMouseEnter`, `onChange`) plante en SSR avec une erreur HTTP 500. Le DS Vite n'a pas cette contrainte (tout client), donc ne porte pas la directive — mais le consumer Next doit la rajouter.
 
 **Convention** : appliquer `'use client'` à **tous** les composants `Cy*` migrés, même les purement présentationnels (`CyGradientText`, `CyLiveDot`). Uniformité, et zéro friction si le composant évolue plus tard pour intégrer un hook.
 
 ```tsx
-// Vue côté DS (~/Desktop/claude-core/business/ds/src/components/core/CyReveal.tsx)
+// Vue côté DS (~/Code/cyrano-ds/src/components/core/CyReveal.tsx)
 'use client';  // ← présent côté DS aussi par cohérence (inerte en Vite)
 
 import React, { useEffect, useRef, useState } from 'react';
@@ -936,9 +936,9 @@ Côté site, `index.ts` ré-exporte. Côté pages Next (`app/.../page.tsx`), les
 
 ## 12. Preview hébergée
 
-Deploy preview à jour : **https://ds.hellocyrano.com** (sous-domaine Vercel, alias secondaire `cyrano-ds.vercel.app`). Mise à jour manuelle via `npx vercel --prod` depuis `business/ds/` (auto-deploy GitHub à brancher).
+Deploy preview à jour : **https://ds.hellocyrano.com** (sous-domaine Vercel, alias secondaire `cyrano-ds.vercel.app`). Mise à jour manuelle via `npx vercel --prod` depuis la racine de ce dépôt, `~/Code/cyrano-ds` (auto-deploy GitHub à brancher).
 
-**Pour qui le DS hébergé** : principalement les humains (Louis, futurs collaborateurs, partage de lien). Les IA du workflow Cyrano (Claude Code, Claude Design, Cursor) lisent directement les fichiers locaux de `business/ds/`, elles n'ont pas besoin de l'URL.
+**Pour qui le DS hébergé** : principalement les humains (Louis, futurs collaborateurs, partage de lien). Les IA du workflow Cyrano (Claude Code, Claude Design, Cursor) lisent directement les fichiers locaux de `~/Code/cyrano-ds`, elles n'ont pas besoin de l'URL.
 
 ---
 
