@@ -1,0 +1,57 @@
+{
+  "$commentaire": "La source de la marque Cyrano. Tout le reste du paquet (CSS, module JS, triplets RGB) est genere par generer.mjs. Modifier ici, augmenter la version de package.json, fusionner : l'Action publie la release.",
+  "couleurs": {
+    "vert": {
+      "300": "#74ffc5",
+      "400": "#30f8a5",
+      "500": "#05d37e",
+      "600": "#00bc6f",
+      "700": "#029358"
+    },
+    "petrole": {
+      "600": "#016c78",
+      "700": "#014751",
+      "800": "#063841",
+      "900": "#111827",
+      "950": "#030712"
+    }
+  },
+  "semantique": {
+    "$commentaire": "Les quatre sens, une valeur par theme : la valeur sombre echoue au contraste sur fond clair. L'information est bleue, jamais verte, pour toute la marque (2026-10-05).",
+    "clair": {
+      "succes": "#047857",
+      "avertissement": "#b45309",
+      "destructif": "#dc2626",
+      "info": "#2563eb"
+    },
+    "sombre": {
+      "succes": "#10b981",
+      "avertissement": "#f59e0b",
+      "destructif": "#ef4444",
+      "info": "#60a5fa"
+    }
+  },
+  "polices": {
+    "$commentaire": "Les apps, les courriels et le contrat prennent la pile systeme. Poppins et Satoshi sont pour la marque seulement (site, decks, livrables).",
+    "systeme": "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+    "mono": "ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace",
+    "titre": "'Poppins', -apple-system, sans-serif",
+    "texte": "'Satoshi', -apple-system, sans-serif",
+    "fichiers": [
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Regular.ttf", "format": "truetype", "graisse": "400" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Medium.ttf", "format": "truetype", "graisse": "500" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-SemiBold.ttf", "format": "truetype", "graisse": "600" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Bold.ttf", "format": "truetype", "graisse": "700" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-ExtraBold.ttf", "format": "truetype", "graisse": "800" },
+      { "famille": "Satoshi", "fichier": "public/fonts/satoshi/Satoshi-Variable.woff2", "format": "woff2-variations", "graisse": "100 900", "style": "normal" },
+      { "famille": "Satoshi", "fichier": "public/fonts/satoshi/Satoshi-VariableItalic.woff2", "format": "woff2-variations", "graisse": "100 900", "style": "italic" }
+    ]
+  },
+  "logos": {
+    "$commentaire": "black se pose sur un fond clair, white sur un fond sombre. Le logo ne se recolore jamais.",
+    "long-black": "public/logos/cyrano_long_black.svg",
+    "long-white": "public/logos/cyrano_long_white.svg",
+    "square-black": "public/logos/cyrano_square_black.svg",
+    "square-white": "public/logos/cyrano_square_white.svg"
+  }
+}

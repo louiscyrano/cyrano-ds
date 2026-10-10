@@ -1,0 +1,24 @@
+{
+  "name": "cyrano-marque",
+  "version": "1.0.0",
+  "description": "La marque Cyrano : couleurs, polices, logos. Genere depuis marque.json, publie en release GitHub de cyrano-ds.",
+  "type": "module",
+  "license": "UNLICENSED",
+  "repository": { "type": "git", "url": "https://github.com/louiscyrano/cyrano-ds", "directory": "packages/marque" },
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+    "./marque.css": { "style": "./dist/marque.css", "default": "./dist/marque.css" },
+    "./polices.css": { "style": "./dist/polices.css", "default": "./dist/polices.css" },
+    "./marque.json": "./dist/marque.json",
+    "./logos/*": "./dist/logos/*",
+    "./polices/*": "./dist/polices/*",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "generer": "node generer.mjs",
+    "verifier": "node generer.mjs --verifier"
+  }
+}

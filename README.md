@@ -2,6 +2,10 @@
 
 Design system de Cyrano. Référence pour les développeurs humains et les IAs (Cursor, Lovable, Claude Code) qui produisent du code Cyrano.
 
+## La marque
+
+Les couleurs, polices et logos de Cyrano ont une seule source : [`packages/marque/`](./packages/marque/README.md), publiée en release GitHub (`marque-v<version>`) et installée par Console, le site et les livrables. Les tokens de `src/styles/tokens.css` sont ceux des gabarits de cette preview ; une couleur de marque se change dans `packages/marque/marque.json`.
+
 ## Install
 
 ```bash
