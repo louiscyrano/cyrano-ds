@@ -5,7 +5,7 @@
 //
 // Ce que le paquet donne :
 //   dist/marque.css   les couleurs (hex et triplets RGB) et les piles de polices, en variables --cy-*
-//   dist/polices.css  les @font-face de Poppins et Satoshi, fichiers dans dist/polices/
+//   dist/polices.css  les @font-face de Poppins et Satoshi (WOFF2), fichiers dans dist/polices/ avec les TTF d'origine
 //   dist/index.js     les memes valeurs pour le code qui ne lit pas de CSS (courriels, contrat, PDF)
 //   dist/marque.json  la source, sans ses commentaires, avec la version
 //   dist/logos/       les logos
@@ -130,6 +130,7 @@ function generer(sortie) {
   writeFileSync(join(sortie, 'index.d.ts'), dts)
   writeFileSync(join(sortie, 'marque.json'), `${JSON.stringify({ version: marque.version, ...marque.source }, null, 2)}\n`)
   for (const p of marque.source.polices.fichiers) copyFileSync(join(DEPOT, p.fichier), join(sortie, 'polices', basename(p.fichier)))
+  for (const chemin of marque.source.polices.originaux ?? []) copyFileSync(join(DEPOT, chemin), join(sortie, 'polices', basename(chemin)))
   for (const chemin of Object.values(marque.source.logos)) copyFileSync(join(DEPOT, chemin), join(sortie, 'logos', basename(chemin)))
 }
 
