@@ -38,13 +38,21 @@
     "titre": "'Poppins', -apple-system, sans-serif",
     "texte": "'Satoshi', -apple-system, sans-serif",
     "fichiers": [
-      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Regular.ttf", "format": "truetype", "graisse": "400" },
-      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Medium.ttf", "format": "truetype", "graisse": "500" },
-      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-SemiBold.ttf", "format": "truetype", "graisse": "600" },
-      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Bold.ttf", "format": "truetype", "graisse": "700" },
-      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-ExtraBold.ttf", "format": "truetype", "graisse": "800" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Regular.woff2", "format": "woff2", "graisse": "400" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Medium.woff2", "format": "woff2", "graisse": "500" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-SemiBold.woff2", "format": "woff2", "graisse": "600" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-Bold.woff2", "format": "woff2", "graisse": "700" },
+      { "famille": "Poppins", "fichier": "public/fonts/poppins/Poppins-ExtraBold.woff2", "format": "woff2", "graisse": "800" },
       { "famille": "Satoshi", "fichier": "public/fonts/satoshi/Satoshi-Variable.woff2", "format": "woff2-variations", "graisse": "100 900", "style": "normal" },
       { "famille": "Satoshi", "fichier": "public/fonts/satoshi/Satoshi-VariableItalic.woff2", "format": "woff2-variations", "graisse": "100 900", "style": "italic" }
+    ],
+    "$originaux": "Les TTF de Poppins, copies dans dist/polices/ sans @font-face : pour les logiciels qui ne lisent pas le WOFF2 (PowerPoint, Keynote).",
+    "originaux": [
+      "public/fonts/poppins/Poppins-Regular.ttf",
+      "public/fonts/poppins/Poppins-Medium.ttf",
+      "public/fonts/poppins/Poppins-SemiBold.ttf",
+      "public/fonts/poppins/Poppins-Bold.ttf",
+      "public/fonts/poppins/Poppins-ExtraBold.ttf"
     ]
   },
   "logos": {
