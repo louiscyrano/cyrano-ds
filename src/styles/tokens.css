@@ -60,6 +60,8 @@
   --cy-font-body: 'Satoshi', -apple-system, sans-serif;
   --cy-font-mono: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
 
+  /* Tailles par taille de t-shirt : gardées tant que les composants s'en servent.
+     Un nouveau code prend un rôle (--cy-corps, --cy-titre-2...), voir AGENT.md §3. */
   --cy-text-xs: 0.75rem;
   --cy-text-sm: 0.875rem;
   --cy-text-base: 1rem;
@@ -84,6 +86,7 @@
   --cy-space-20: 5rem;
 
   --cy-radius-sm: 4px;
+  --cy-radius-md: 6px;
   --cy-radius-lg: 8px;
   --cy-radius-xl: 12px;
   --cy-radius-2xl: 16px;
@@ -221,4 +224,35 @@
   --cy-shadow-green-md: 0 6px 20px rgb(var(--cy-green-500-rgb) / 0.28);
   --cy-shadow-green-lg: 0 12px 32px rgb(var(--cy-green-500-rgb) / 0.35);
   --cy-shadow-green-glow: 0 0 32px rgb(var(--cy-green-500-rgb) / 0.4);
+}
+
+/* Échelle de texte par rôle (AGENT.md §3, seule source). Les titres changent de valeur
+   à 640 px (tablette) et 1024 px (ordinateur), sans clamp(). Rien au-dessus de 56 px. */
+:root {
+  --cy-titre-1: 32px;
+  --cy-titre-2: 28px;
+  --cy-titre-3: 18px;
+  --cy-titre-4: 16px;
+  --cy-chapo: 16px;
+  --cy-corps: 15px;
+  --cy-secondaire: 14px;
+  --cy-dense: 13px;
+  --cy-legende: 12px;
+  --cy-surtitre: 12px;
+  --cy-micro: 11px;
+  --cy-chiffre: 36px;
+  --cy-chiffre-vedette: 44px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --cy-titre-1: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --cy-titre-1: 56px;
+    --cy-titre-2: 36px;
+  }
 }

@@ -533,124 +533,46 @@ const TypographySection: React.FC = () => (
     </DocSubSection>
 
     <DocSubSection
-      title="Hiérarchie des titres"
-      description="Quatre niveaux de titre. Trois paliers fixes par titre (mobile / tablet / desktop). Le H1 utilise le dégradé principal en bg-clip-text."
+      title="Échelle de texte"
+      description="Une taille est un rôle : classe text-<rôle> ou var(--cy-<rôle>). La valeur change seule à 640 et 1024px, sans clamp(). Rien au-dessus de 56px. Source : AGENT.md §3. Redimensionne la fenêtre pour voir les titres changer de palier."
     >
       <DocBlock>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          <div>
-            <div
-              className="text-[36px] sm:text-[44px] lg:text-[56px]"
-              style={{
-                fontFamily: 'var(--cy-font-heading)',
-                fontWeight: 800,
-                lineHeight: 1.05,
-                letterSpacing: 'var(--cy-tracking-tighter)',
-                background: 'var(--cy-gradient-primary)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                color: 'transparent',
-              }}
-            >
-              Hero Title
-            </div>
-            <code style={{ fontSize: 11, color: 'var(--cy-text-tertiary)' }}>
-              H1 — Poppins 800 — 36 / 44 / 56px (mobile / tablet / desktop), line-height 1.05, gradient text
-            </code>
-          </div>
-          <div>
-            <div
-              className="text-[28px] sm:text-[32px] lg:text-[36px]"
-              style={{
-                fontFamily: 'var(--cy-font-heading)',
-                fontWeight: 700,
-                lineHeight: 1.1,
-                letterSpacing: 'var(--cy-tracking-tight)',
-                color: 'var(--cy-text-primary)',
-              }}
-            >
-              Section Title
-            </div>
-            <code style={{ fontSize: 11, color: 'var(--cy-text-tertiary)' }}>
-              H2 — Poppins 700 — 28 / 32 / 36px, line-height 1.1
-            </code>
-          </div>
-          <div>
-            <div
-              className="text-[20px] sm:text-[22px] lg:text-[24px]"
-              style={{
-                fontFamily: 'var(--cy-font-heading)',
-                fontWeight: 600,
-                lineHeight: 1.2,
-                color: 'var(--cy-text-primary)',
-              }}
-            >
-              Sub-section Title
-            </div>
-            <code style={{ fontSize: 11, color: 'var(--cy-text-tertiary)' }}>
-              H3 — Poppins 600 — 20 / 22 / 24px, line-height 1.2
-            </code>
-          </div>
-          <div>
-            <div
-              className="text-[16px] sm:text-[17px] lg:text-[18px]"
-              style={{
-                fontFamily: 'var(--cy-font-heading)',
-                fontWeight: 600,
-                lineHeight: 1.3,
-                color: 'var(--cy-text-primary)',
-              }}
-            >
-              Block Title
-            </div>
-            <code style={{ fontSize: 11, color: 'var(--cy-text-tertiary)' }}>
-              H4 — Poppins 600 — 16 / 17 / 18px, line-height 1.3
-            </code>
-          </div>
+          {TEXT_SCALE.map((r) => (
+            <ScaleRow key={r.role} {...r} />
+          ))}
         </div>
       </DocBlock>
     </DocSubSection>
 
     <DocSubSection
-      title="Breakpoints typo"
-      description="Trois paliers fixes alignés sur les breakpoints Tailwind. Pas de clamp(), pas d'interpolation fluide."
+      title="Surtitre"
+      description="Seulement s'il ajoute une information que le titre ne donne pas (étape, date, catégorie qu'on ne devine pas). Jamais par défaut au-dessus de chaque titre de section : posé partout, il fait générique."
     >
       <DocBlock>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-            <code style={{ fontSize: 12, color: 'var(--cy-text-primary)', minWidth: 90 }}>Mobile</code>
-            <span style={{ fontSize: 13, color: 'var(--cy-text-secondary)' }}>
-              &lt;640px <span style={{ color: 'var(--cy-text-tertiary)' }}>(Tailwind &lt; <code>sm</code>)</span>
+        <div style={grid(2, 16)}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <span className="text-surtitre" style={{ fontWeight: 600, color: 'var(--cy-text-accent)' }}>
+              Étape 2 sur 3
+            </span>
+            <span className="text-titre-3" style={{ fontFamily: 'var(--cy-font-heading)', fontWeight: 600 }}>
+              On lance les premiers tests
+            </span>
+            <span className="text-legende" style={{ color: 'var(--cy-text-tertiary)' }}>
+              Oui : le surtitre dit où on en est, le titre ne le dit pas.
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-            <code style={{ fontSize: 12, color: 'var(--cy-text-primary)', minWidth: 90 }}>Tablet</code>
-            <span style={{ fontSize: 13, color: 'var(--cy-text-secondary)' }}>
-              640px – 1024px <span style={{ color: 'var(--cy-text-tertiary)' }}>(Tailwind <code>sm</code> à <code>lg</code>)</span>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <span className="text-surtitre" style={{ fontWeight: 600, color: 'var(--cy-text-accent)' }}>
+              Nos résultats
+            </span>
+            <span className="text-titre-3" style={{ fontFamily: 'var(--cy-font-heading)', fontWeight: 600 }}>
+              Ce que nos clients obtiennent
+            </span>
+            <span className="text-legende" style={{ color: 'var(--cy-text-tertiary)' }}>
+              Non : il répète le titre.
             </span>
           </div>
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12 }}>
-            <code style={{ fontSize: 12, color: 'var(--cy-text-primary)', minWidth: 90 }}>Desktop</code>
-            <span style={{ fontSize: 13, color: 'var(--cy-text-secondary)' }}>
-              ≥1024px <span style={{ color: 'var(--cy-text-tertiary)' }}>(Tailwind <code>lg</code> et au-delà)</span>
-            </span>
-          </div>
-          <p style={{ fontSize: 13, color: 'var(--cy-text-secondary)', marginTop: 8, lineHeight: 1.5 }}>
-            Les valeurs desktop sont la référence canonique du DS. Mobile et tablet sont des paliers fixes — pas de <code>clamp()</code>, pas d'interpolation fluide. Un projet qui consomme le DS doit appliquer ces trois paliers via media queries ou variantes Tailwind (<code>text-[36px] sm:text-[44px] lg:text-[56px]</code>).
-          </p>
-        </div>
-      </DocBlock>
-    </DocSubSection>
-
-    <DocSubSection title="Tailles de texte" description="Échelle utilisée pour le corps et l'UI.">
-      <DocBlock>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          <SizeRow size={12} label="text-xs" usage="Labels, badges, captions" />
-          <SizeRow size={14} label="text-sm" usage="UI dense, sidebar, form labels" />
-          <SizeRow size={16} label="text-base" usage="Body par défaut" />
-          <SizeRow size={18} label="text-lg" usage="Lead paragraphs, sub-headings" />
-          <SizeRow size={20} label="text-xl" usage="Featured copy" />
         </div>
       </DocBlock>
     </DocSubSection>
@@ -676,20 +598,51 @@ const TypographySection: React.FC = () => (
   </DocSection>
 );
 
-const SizeRow: React.FC<{ size: number; label: string; usage: string }> = ({ size, label, usage }) => (
-  <div style={{ display: 'flex', alignItems: 'baseline', gap: 16 }}>
-    <span
+const TEXT_SCALE: {
+  role: string;
+  // Classe écrite en entier : Tailwind ne voit pas une classe construite (`text-${role}`).
+  cls: string;
+  values: string;
+  usage: string;
+  sample: string;
+  weight: number;
+  heading?: boolean;
+}[] = [
+  { role: 'titre-1', cls: 'text-titre-1', values: '32 · 40 · 56', usage: 'Titre du hero, de fin de page', sample: 'Vos futurs clients', weight: 800, heading: true },
+  { role: 'titre-2', cls: 'text-titre-2', values: '28 · 28 · 36', usage: 'Titre de section', sample: 'Nous testons chaque semaine', weight: 800, heading: true },
+  { role: 'titre-3', cls: 'text-titre-3', values: '18', usage: 'Titre de bloc, question de FAQ', sample: 'De nouveaux tests chaque semaine', weight: 600, heading: true },
+  { role: 'titre-4', cls: 'text-titre-4', values: '16', usage: 'Titre de carte, nom', sample: 'Votre playbook', weight: 700, heading: true },
+  { role: 'chapo', cls: 'text-chapo', values: '16', usage: 'Sous un titre de hero ou de section', sample: "Chaque semaine, nous testons de nouvelles façons d'attaquer votre marché.", weight: 400 },
+  { role: 'corps', cls: 'text-corps', values: '15', usage: "Tout texte qu'on lit", sample: 'Nous analysons en profondeur les résultats de chaque campagne.', weight: 400 },
+  { role: 'secondaire', cls: 'text-secondaire', values: '14', usage: "Preuve, avis, en-tête de tableau, interface d'app", sample: 'Plus de 30 équipes B2B nous confient leur prospection.', weight: 400 },
+  { role: 'dense', cls: 'text-dense', values: '13', usage: "Texte d'une maquette, pied de page", sample: 'Objet : Optimisez la performance de votre supply chain', weight: 400 },
+  { role: 'legende', cls: 'text-legende', values: '12', usage: 'Libellé, note, rôle, date', sample: 'E-mail professionnel · obligatoire', weight: 500 },
+  { role: 'surtitre', cls: 'text-surtitre', values: '12', usage: 'Au-dessus d\'un titre, badge (avec parcimonie)', sample: 'Étape 2 sur 3', weight: 600 },
+  { role: 'micro', cls: 'text-micro', values: '11', usage: 'Chrome de fenêtre, badge de semaine', sample: 'LIVE', weight: 700 },
+  { role: 'chiffre', cls: 'text-chiffre', values: '36', usage: "Chiffre d'une tuile de résultat", sample: '2 plays', weight: 800, heading: true },
+  { role: 'chiffre-vedette', cls: 'text-chiffre-vedette', values: '44', usage: 'Le chiffre mis en avant', sample: '30 min', weight: 800, heading: true },
+];
+
+const ScaleRow: React.FC<(typeof TEXT_SCALE)[number]> = ({ role, cls, values, usage, sample, weight, heading }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+    <div
+      className={cls}
       style={{
-        fontSize: size,
+        fontFamily: heading ? 'var(--cy-font-heading)' : 'var(--cy-font-body)',
+        fontWeight: weight,
         color: 'var(--cy-text-primary)',
-        fontFamily: 'var(--cy-font-body)',
-        minWidth: 200,
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
       }}
     >
-      Aa — {size}px
-    </span>
-    <code style={{ fontSize: 11, color: 'var(--cy-green-400)' }}>{label}</code>
-    <span style={{ fontSize: 'var(--cy-text-sm)', color: 'var(--cy-text-secondary)' }}>{usage}</span>
+      {sample}
+    </div>
+    <div style={{ display: 'flex', gap: 12, alignItems: 'baseline', flexWrap: 'wrap' }}>
+      <code style={{ fontSize: 'var(--cy-legende)', color: 'var(--cy-green-400)' }}>text-{role}</code>
+      <span style={{ fontSize: 'var(--cy-legende)', color: 'var(--cy-text-primary)' }}>{values} px</span>
+      <span style={{ fontSize: 'var(--cy-legende)', color: 'var(--cy-text-secondary)' }}>{usage}</span>
+    </div>
   </div>
 );
 
@@ -2656,31 +2609,32 @@ const LayoutSection: React.FC = () => (
     </DocSubSection>
 
     <DocSubSection
-      title="Spacing"
-      description="Espacement entre éléments avec une échelle cohérente. space-x-* en ligne, gap-* en grid/flex."
+      title="Étages d'espacement"
+      description="Grille de 4px. On choisit l'étage, puis la valeur. Hors étage : 10, 14, 18, 20, 22, 26, 28px, les demi-pas et les pixels à la main. Source : AGENT.md §3."
     >
       <DocBlock>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <SpacingDemo label="space-x-2" usage="Petits éléments (8px)" gap={8} count={3} />
-          <SpacingDemo label="space-x-4" usage="Éléments moyens (16px)" gap={16} count={3} />
-          <SpacingDemo label="space-x-8" usage="Grands éléments (32px)" gap={32} count={3} />
-          <SpacingDemo label="gap-6" usage="Grid spacing (24px)" gap={24} count={3} wide />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <SpacingDemo label="gap-1 · gap-2" usage="Dans un contrôle : icône et texte (4 ou 8px)" gap={8} count={3} />
+          <SpacingDemo label="gap-2 · gap-3" usage="Dans un bloc : titre de carte et texte (8 ou 12px)" gap={12} count={3} />
+          <SpacingDemo label="gap-4 · gap-6" usage="Entre les blocs d'une section : cartes d'une grille (16 ou 24px)" gap={24} count={3} wide />
+          <SpacingDemo label="gap-8 · gap-10" usage="Entre les zones d'un écran d'app (32 ou 40px) ; landing : py-12 lg:py-20" gap={40} count={2} wide />
         </div>
       </DocBlock>
     </DocSubSection>
 
     <DocSubSection
-      title="Border radius"
-      description="Six valeurs canoniques. Pas de radius arbitraire."
+      title="Arrondis"
+      description="Un arrondi par rôle, pas d'autre valeur. Un arrondi intérieur se calcule depuis le token. Source : AGENT.md §3."
     >
       <DocBlock>
-        <div style={grid(6, 10)}>
-          <RadiusCard radius={4} name="rounded-sm" usage="Inputs internes" />
-          <RadiusCard radius={8} name="rounded-lg" usage="Sidebar, swatches" />
-          <RadiusCard radius={12} name="rounded-xl" usage="Cards, DocBlock" />
-          <RadiusCard radius={16} name="rounded-2xl" usage="Textareas" />
-          <RadiusCard radius={24} name="rounded-3xl" usage="Modals, overlays" />
-          <RadiusCard radius={9999} name="rounded-full" usage="Boutons, badges" />
+        <div style={grid(4, 10)}>
+          <RadiusCard radius={9999} name="rounded-full" usage="Boutons, badges, pastilles" />
+          <RadiusCard radius={24} name="rounded-3xl" usage="Grand panneau de landing" />
+          <RadiusCard radius={16} name="rounded-2xl" usage="Grand conteneur, sidebar" />
+          <RadiusCard radius={12} name="rounded-xl" usage="Carte, menu, toast, bouton icon" />
+          <RadiusCard radius={8} name="rounded-lg" usage="Champ, bouton d'app, dialogue, popover" />
+          <RadiusCard radius={6} name="rounded-md" usage="Option dans un menu, onglet" />
+          <RadiusCard radius={4} name="rounded-sm" usage="Case à cocher, compteur" />
         </div>
       </DocBlock>
     </DocSubSection>

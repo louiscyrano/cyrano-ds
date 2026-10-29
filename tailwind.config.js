@@ -61,7 +61,26 @@ export default {
         heading: 'var(--cy-font-heading)',
         body: 'var(--cy-font-body)',
       },
+      // Échelle de texte par rôle (AGENT.md §3). La valeur suit le palier d'écran via tokens.css.
+      fontSize: {
+        'titre-1': ['var(--cy-titre-1)', { lineHeight: '1.05', letterSpacing: '-0.03em' }],
+        'titre-2': ['var(--cy-titre-2)', { lineHeight: '1.1', letterSpacing: '-0.02em' }],
+        'titre-3': ['var(--cy-titre-3)', { lineHeight: '1.3' }],
+        'titre-4': ['var(--cy-titre-4)', { lineHeight: '1.3' }],
+        chapo: ['var(--cy-chapo)', { lineHeight: '1.5' }],
+        corps: ['var(--cy-corps)', { lineHeight: '1.55' }],
+        secondaire: ['var(--cy-secondaire)', { lineHeight: '1.45' }],
+        dense: ['var(--cy-dense)', { lineHeight: '1.5' }],
+        legende: ['var(--cy-legende)', { lineHeight: '1.4' }],
+        surtitre: ['var(--cy-surtitre)', { lineHeight: '1.4' }],
+        micro: ['var(--cy-micro)', { lineHeight: '1.3' }],
+        chiffre: ['var(--cy-chiffre)', { lineHeight: '1' }],
+        'chiffre-vedette': ['var(--cy-chiffre-vedette)', { lineHeight: '1' }],
+      },
+      // Table des arrondis (AGENT.md §3). sm et md branchés sur les tokens : sans ça, Tailwind donne 2 et 6 px.
       borderRadius: {
+        sm: 'var(--cy-radius-sm)',
+        md: 'var(--cy-radius-md)',
         lg: 'var(--cy-radius-lg)',
         xl: 'var(--cy-radius-xl)',
         '2xl': 'var(--cy-radius-2xl)',
