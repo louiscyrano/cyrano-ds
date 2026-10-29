@@ -142,7 +142,65 @@ L'opacity Tailwind fonctionne (`bg-primary/90`, `text-foreground/60`) via RGB tr
 
 ### Typo
 
-`font-heading` = Poppins (titres, weights 600-800, letter-spacing -0.02em). `font-body` = Satoshi (corps, 400-600). Tailles `text-xs` (12px) → `text-6xl` (56px).
+`font-heading` = Poppins (titres, weights 600-800). `font-body` = Satoshi (corps, 400-600).
+
+### Échelle de texte
+
+**Ce fichier est la seule source de l'échelle de texte, des arrondis et des espacements.** `DESIGN_SYSTEM.md` et `prompts/system-prompt.md` y renvoient.
+
+Une taille de texte est un rôle, jamais des pixels. Classe Tailwind `text-<rôle>` (couche `app/`, landings en Tailwind) ou variable `var(--cy-<rôle>)` (couche `core/` et `landing/`, styles inline et CSS). Les valeurs vivent dans `tokens.css` et changent seules au bon palier : mobile < 640px, tablette 640-1023px, ordinateur ≥ 1024px. Pas de `clamp()`, pas de `text-[17px]`, pas de demi-pixel. Rien au-dessus de 56px, même sur très grand écran.
+
+| Rôle | Classe · variable | Mobile | Tablette | Ordi | Graisse | Usage |
+|---|---|---|---|---|---|---|
+| Titre 1 | `text-titre-1` · `--cy-titre-1` | 32 | 40 | 56 | 800, Poppins | Titre du hero, titre de fin de page. Un par écran. |
+| Titre 2 | `text-titre-2` · `--cy-titre-2` | 28 | 28 | 36 | 700 ou 800, Poppins | Titre de section |
+| Titre 3 | `text-titre-3` · `--cy-titre-3` | 18 | 18 | 18 | 600, Poppins | Titre de bloc, question de FAQ |
+| Titre 4 | `text-titre-4` · `--cy-titre-4` | 16 | 16 | 16 | 600 ou 700, Poppins | Titre de carte, nom d'une personne |
+| Chapô | `text-chapo` · `--cy-chapo` | 16 | 16 | 16 | 400 | Le paragraphe sous un titre de hero ou de section |
+| Corps | `text-corps` · `--cy-corps` | 15 | 15 | 15 | 400 | Tout texte qu'on lit |
+| Secondaire | `text-secondaire` · `--cy-secondaire` | 14 | 14 | 14 | 400 à 600 | Preuve, avis, en-tête de tableau, interface d'app |
+| Dense | `text-dense` · `--cy-dense` | 13 | 13 | 13 | 400 ou 600 | Texte d'une maquette d'interface (mail, fenêtre), pied de page |
+| Légende | `text-legende` · `--cy-legende` | 12 | 12 | 12 | 400 ou 500 | Libellé de champ, note, rôle, date |
+| Surtitre | `text-surtitre` · `--cy-surtitre` | 12 | 12 | 12 | 600 ou 700 | Au-dessus d'un titre, badge, puce (voir la règle plus bas) |
+| Micro | `text-micro` · `--cy-micro` | 11 | 11 | 11 | 600 ou 700 | Plus petits libellés d'une maquette : chrome de fenêtre (« LIVE »), badge de semaine. Jamais pour un texte à lire. |
+| Chiffre | `text-chiffre` · `--cy-chiffre` | 36 | 36 | 36 | 800, Poppins | Chiffre d'une tuile de résultat |
+| Chiffre vedette | `text-chiffre-vedette` · `--cy-chiffre-vedette` | 44 | 44 | 44 | 800, Poppins | Le chiffre qu'une section met en avant |
+
+13 valeurs en tout : 11, 12, 13, 14, 15, 16, 18, 28, 32, 36, 40, 44, 56px. Interlignes : 1.05 (titre 1), 1.1 (titre 2), 1.3 (titres 3 et 4), 1.5 (chapô, dense), 1.55 (corps) ; les classes `text-<rôle>` les posent. Letter-spacing `-0.03em` sur le titre 1, `-0.02em` sur le titre 2. La graisse se pose à côté du rôle (`font-semibold`), jamais dedans. Les chiffres alignés prennent `tabular-nums`. Exception nommée : le guillemet décoratif d'une citation (72px).
+
+Les tokens `--cy-text-xs` à `--cy-text-6xl` et les classes `text-xs` à `text-6xl` restent pour les composants existants ; un nouveau code prend un rôle. Attention : `--cy-text-3xl` vaut 32px mais `text-3xl` 30px, d'où la règle.
+
+**Surtitre** : seulement s'il ajoute une information que le titre ne donne pas (une étape, une date, une catégorie qu'on ne devine pas). Jamais par défaut au-dessus de chaque titre de section : posé partout, il fait générique et IA. Une landing en compte rarement plus d'un ou deux.
+
+### Arrondis
+
+Un arrondi se prend à la table, par rôle. Pas de `rounded-[10px]`, pas d'autre valeur en pixels.
+
+| Rôle | Valeur | Classe · variable | Composants |
+|---|---|---|---|
+| Pilule | 9999px | `rounded-full` · `--cy-radius-full` | CyButton (sauf variant `icon`), CyAnimatedButton, CyBadge, CyLinkPill, AppEditableChip, AppToggle, AppAvatar, pastilles |
+| Grand panneau de landing | 24px | `rounded-3xl` · `--cy-radius-3xl` | CyCtaBanner, bloc encadré pleine largeur |
+| Grand conteneur | 16px | `rounded-2xl` · `--cy-radius-2xl` | AppSidebar, grande carte de landing |
+| Carte | 12px | `rounded-xl` · `--cy-radius-xl` | CyCard, CyStatus, AppDropdownMenu, AppToast, CyButton variant `icon` |
+| Contrôle, surface flottante | 8px | `rounded-lg` · `--cy-radius-lg` | CyInput, CyTextarea, AppButton, AppSelect, AppPopover, AppDialog, AppAlertDialog, AppTabs, Tooltip, CyMenuToggle, AppSkeleton |
+| Élément dans un menu | 6px | `rounded-md` · `--cy-radius-md` | Option de AppSelect et AppCombobox, onglet de AppTabs, action de AppToast |
+| Petit | 4px | `rounded-sm` · `--cy-radius-sm` | AppCheckbox, compteur de AppCounterButton |
+
+Un dialogue d'app est en 8px, pas 24px : 24px est réservé aux grands panneaux de landing. Un arrondi intérieur se calcule (`calc(var(--cy-radius-xl) - var(--cy-border-thickness))`, comme CyAnimatedButton), jamais en pixels. Hors table : 2, 7, 9, 10, 14, 20, 28px.
+
+### Espacements
+
+Grille de 4px, en étages. On choisit l'étage d'abord, la valeur ensuite.
+
+| Étage | Valeurs | Tailwind | Exemples |
+|---|---|---|---|
+| Dans un contrôle | 4 ou 8px (2 et 6px tolérés) | `gap-1`, `gap-2` | Icône et texte d'un bouton, puce et libellé |
+| Dans un bloc | 8 ou 12px | `gap-2`, `gap-3` | Titre de carte et son texte ; libellé, champ, aide |
+| Entre les blocs d'une section | 16 ou 24px | `gap-4`, `gap-6` | Cartes d'une grille ; padding d'une carte |
+| Entre les sections | landing : 48px mobile, 80px ordi ; app : 32 ou 40px | `py-12 lg:py-20` ; `gap-8`, `gap-10` | Deux sections d'une landing, deux zones d'un écran d'app |
+| Marges de page | 16, 24, 32px | `px-4 sm:px-6 lg:px-8` | Conteneur de page |
+
+Hors étage : 10, 14, 18, 20, 22, 26, 28, 30, 34px, les demi-pas (`gap-2.5`) et les pixels à la main (`gap-[18px]`, `padding: 18px`). Un espacement change avec le palier d'écran par une variante Tailwind (`p-6 lg:p-8`), jamais par `clamp()`.
 
 ---
 
