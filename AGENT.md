@@ -1,4 +1,6 @@
-# Cyrano DS — Manuel agent
+# DS landings — Manuel agent
+
+> Le design system des livrables visuels de Cyrano (landings, decks, rapports, site), ex « DS v1 ». Les applications (Console, Cydash) suivent le DS apps, dans le `docs/DESIGN.md` de leur dépôt.
 
 > Tu produis du code pour Cyrano (agence cold email B2B). Lis ce fichier en entier avant d'écrire. Tu RÉUTILISES les composants ci-dessous, tu ne réinventes pas, tu ne sors pas du stack.
 
@@ -8,7 +10,7 @@
 
 ## 0. Règle de synchronisation doc / preview
 
-**`DESIGN_SYSTEM.md` et la preview React (`src/App.tsx`) sont les deux faces du même DS.** Toute modification documentaire dans `DESIGN_SYSTEM.md` (tokens, hiérarchie typo, breakpoints, règles d'usage…) DOIT être propagée dans la section correspondante de `src/App.tsx` pour que le changement soit visible dans la preview. Inversement, toute modif visuelle propagée dans la preview doit être reflétée dans `DESIGN_SYSTEM.md` pour rester la spec canonique.
+**Ce fichier est la spec canonique ; la preview React (`src/App.tsx`) la montre.** Toute modification de règle (tokens, échelle de texte, arrondis, espacements, règles d'usage) s'écrit ici et DOIT être propagée dans la section correspondante de `src/App.tsx`. Inversement, toute modif visuelle de la preview est reflétée ici. `DESIGN_SYSTEM.md` (doc humaine) et `prompts/system-prompt.md` renvoient à ce fichier au lieu de répéter l'échelle de texte, les arrondis et les espacements.
 
 Pas de doc qui dérive du code, pas de code qui dérive de la doc.
 
@@ -35,7 +37,7 @@ import { cn } from '@/lib/utils';
 
 - **AGENT.md** (ce fichier) : manuel de référence complet pour générer du code.
 - **prompts/system-prompt.md** : règles absolues condensées. Charge par défaut.
-- **DESIGN_SYSTEM.md** : doc humaine longue (non destinée à l'IA).
+- **DESIGN_SYSTEM.md** : doc humaine longue (non destinée à l'IA), qui renvoie ici pour l'échelle de texte, les arrondis et les espacements.
 - **ds-index.json** : inventaire machine-readable auto-généré (composants par couche + tokens groupés). Pour un résumé compact (3KB) au lieu de relire 25KB de manuel. Régénérer avec `npm run ds:gen` après toute modif d'export.
 - **Preview** : `npm run dev` puis http://localhost:3000.
 
@@ -936,14 +938,16 @@ selon la taille de viewport.
 
 - ❌ Sparkles, particules, magnetic pull, diamond spin, pulse glow agressifs sur les CTAs
 - ❌ SVG inline maison ou autre lib d'icônes que `lucide-react`
-- ❌ Hex hardcodés pour les couleurs d'identité (utilise `--cy-*` ou classes Tailwind mappées)
+- ❌ Hex en dur : une couleur de marque passe par `--cy-*` ou sa classe Tailwind, une couleur hors marque se déclare d'abord comme token dans `tokens.css`
 - ❌ Vert sur les hovers/textes neutres dans `app/` (réservé aux états signifiants)
 - ❌ Recoloriage / déformation / outline du logo
 - ❌ Z-index arbitraire (utilise les paliers de la section 4)
 - ❌ Réimplémenter un composant qui existe (regarde sections 5-6)
 - ❌ `core/` qui importe `app/` (cycle interdit)
 - ❌ Plus d'un `CyAnimatedButton` par vue
-- ❌ `rounded-full` sauf variant `icon` (alors `rounded-xl`)
+- ❌ Un bouton core qui n'est pas en `rounded-full` (seule exception : variant `icon` en `rounded-xl`)
+- ❌ Une taille de texte, un arrondi ou un espacement hors de §3 (`text-[17px]`, `clamp()`, `rounded-[10px]`, `gap-[18px]`, demi-pixels)
+- ❌ Un surtitre au-dessus de chaque titre de section
 
 ---
 
@@ -954,6 +958,7 @@ Avant de soumettre du code, vérifie :
 - [ ] Imports séparés par couche : `@/components/core` / `@/components/landing` / `@/components/app` (jamais le barrel global `@/components`)
 - [ ] Toutes les icônes viennent de `lucide-react`
 - [ ] Aucun hex hardcodé hors `--cy-*` ou couleurs Tailwind mappées
+- [ ] Tailles de texte, arrondis et espacements pris à §3 (rôles `text-<rôle>`, table des arrondis, étages)
 - [ ] Tous les composants utilisés existent dans les sections 5-6 (sinon : tu inventes, stop)
 - [ ] Au plus un `CyAnimatedButton` par vue
 - [ ] Pas d'import croisé entre `core/` / `landing/` / `app/` qui viole les règles §1

@@ -1,4 +1,4 @@
-# Cyrano Design System — System Prompt
+# DS landings (Cyrano) — System Prompt
 
 Tu produis du code pour Cyrano (agence cold email B2B AI-native).
 Tu DOIS respecter strictement le design system Cyrano.
@@ -37,13 +37,15 @@ Le DS est organisé en trois couches.
 
 ### Couleurs
 - Palette d'identité Cyrano : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900
-- Couleurs supplémentaires autorisées au cas par cas (ex : palette Tailwind par défaut yellow / red / violet pour les états d'alerte). Pas de couleur "interdite", utilise ce qui sert le besoin sémantique.
-- Préfère les CSS variables (`var(--cy-green-500)`) ou les tokens Tailwind quand ils existent. Les hex en dur sont OK pour les couleurs ponctuelles non-thématiques (ex. status alerts).
+- Couleurs supplémentaires autorisées au cas par cas (états d'alerte, cas sémantique précis), toujours par un token.
+- Couleur de marque (vert, pétrole, gris, couleurs de sens) : toujours par son token `--cy-*` ou sa classe Tailwind, jamais en hex. Une couleur hors marque (un état précis, une illustration) se déclare d'abord comme token dans `tokens.css`, puis s'utilise ; jamais de hex dans un composant.
 - Ombres vertes : utilise les tokens `var(--cy-shadow-green-sm/md/lg/glow)`, jamais d'inline `rgb(5 211 126 / X)`.
 
 ### Typographie
 - Titres : Poppins (`font-heading`), weights 600-800, letter-spacing -0.02em à -0.03em
 - Corps : Satoshi (`font-body`), weights 400-600
+- Tailles : une taille = un rôle (`text-titre-1`… `text-legende`), pris à l'échelle d'[AGENT.md](../AGENT.md) §3. Pas de `clamp()`, pas de `text-[17px]`, rien au-dessus de 56px.
+- Surtitre seulement s'il ajoute une information que le titre ne donne pas, jamais sur chaque section.
 - Mono : `font-mono` (`var(--cy-font-mono)`) pour code et data
 
 ### Boutons
@@ -59,7 +61,7 @@ Le DS est organisé en trois couches.
 
 ### Layout
 - max-w-7xl global, max-w-2xl pour formulaires.
-- Section padding : py-12 (md), py-20 (large).
+- Espacements et arrondis : étages et table d'[AGENT.md](../AGENT.md) §3, seule source (grille de 4px, un arrondi par rôle).
 
 ### Animations
 - Hover : scale 1.02-1.03 + shadow intensify.

@@ -3055,9 +3055,9 @@ const AIGuidelinesSection: React.FC = () => (
 
     <RulesBox variant="good" title="Règles absolues">
       <ol style={{ margin: 0, paddingLeft: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
-        <li>Palette d'identité : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900. Couleurs supplémentaires (yellow / red / violet, etc.) autorisées au cas par cas (ex : status alerts).</li>
-        <li>Préfère CSS variables (--cy-green-500) ou tokens Tailwind quand ils existent ; hex en dur OK pour couleurs ponctuelles non-thématiques.</li>
-        <li>Titres en Poppins, corps en Satoshi.</li>
+        <li>Palette d'identité : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900. Une couleur supplémentaire (état d'alerte, cas sémantique précis) passe par un token.</li>
+        <li>Couleur de marque : toujours son token <code>--cy-*</code> ou sa classe Tailwind, jamais en hex. Une couleur hors marque se déclare d'abord comme token dans <code>tokens.css</code>.</li>
+        <li>Titres en Poppins, corps en Satoshi, tailles prises à l'échelle de texte (AGENT.md §3) : une taille = un rôle.</li>
         <li>Boutons rounded-full par défaut, rounded-xl uniquement pour la variant <code>icon</code>.</li>
         <li>CyAnimatedButton uniquement pour les CTAs majeurs (un par vue), en 3 tailles.</li>
         <li>Pas de sparkles, particules, magnetic pull, diamond spin.</li>
@@ -3099,7 +3099,7 @@ const AIGuidelinesSection: React.FC = () => (
     >
       <CodeBlock
         lang="md"
-        code={`# Cyrano Design System — System Prompt
+        code={`# DS landings (Cyrano) — System Prompt
 
 Tu produis du code pour Cyrano (agence cold email B2B AI-native).
 Tu DOIS respecter strictement le design system Cyrano.
@@ -3119,11 +3119,13 @@ Règles :
 ### Couleurs
 - Palette d'identité : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900
 - Couleurs supplémentaires autorisées au cas par cas (ex : yellow / red / violet pour les status alerts)
-- Préfère CSS variables (--cy-green-500) ou tokens Tailwind quand ils existent ; hex en dur OK pour couleurs ponctuelles non-thématiques
+- Couleur de marque : toujours son token --cy-* ou sa classe Tailwind, jamais en hex ; une couleur hors marque se déclare d'abord comme token dans tokens.css
 
 ### Typographie
 - Titres : Poppins (font-heading), weights 600-800, letter-spacing -0.02em à -0.03em
 - Corps : Satoshi (font-body), weights 400-600
+- Tailles : une taille = un rôle (text-titre-1 … text-legende), échelle d'AGENT.md §3, rien au-dessus de 56px
+- Surtitre seulement s'il ajoute une information que le titre ne donne pas
 
 ### Boutons
 - 5 variantes standards : primary / icon / outlined / ghost / disabled
@@ -3140,7 +3142,7 @@ Règles :
 
 ### Layout
 - max-w-7xl global, max-w-2xl pour formulaires
-- Section padding : py-12 (md), py-20 (large)
+- Espacements et arrondis : étages et table d'AGENT.md §3 (grille de 4px, un arrondi par rôle)
 
 ### Animations
 - Hover : scale 1.02-1.03 + shadow intensify

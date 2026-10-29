@@ -1,6 +1,6 @@
-# Cyrano DS
+# DS landings (Cyrano)
 
-Design system de Cyrano. Référence pour les développeurs humains et les IAs (Cursor, Lovable, Claude Code) qui produisent du code Cyrano.
+Design system des livrables visuels de Cyrano (landings, decks, rapports, site), ex « DS v1 ». Les applications ont le leur, le DS apps. Référence pour les développeurs humains et les IAs (Cursor, Lovable, Claude Code) qui produisent du code Cyrano.
 
 ## La marque
 

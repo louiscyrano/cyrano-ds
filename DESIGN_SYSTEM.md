@@ -1,10 +1,12 @@
-# Cyrano Design System
+# DS landings (Cyrano)
+
+> Le design system des livrables visuels de Cyrano (landings, decks, rapports, site), ex « DS v1 ». Les applications (Console, Cydash) ont le leur, le DS apps, dans le `docs/DESIGN.md` de leur dépôt.
 
 > **Tu es une IA générant du code Cyrano ?** Ne lis pas ce fichier. Va dans [AGENT.md](AGENT.md). Il contient le manuel de référence (tokens, API exacte de chaque composant, recettes copy-paste, anti-patterns) en format optimisé pour la génération de code. Ce fichier-ci est la doc longue humaine, structurée pour lecture séquentielle.
 >
 > **Tu es un humain ?** Bienvenue. Tu peux aussi explorer visuellement via `npm run dev` (preview locale http://localhost:3000).
 
-Référence textuelle exhaustive. Toute déviation = bug à corriger.
+Doc humaine longue. **Échelle de texte, arrondis, espacements : [AGENT.md](AGENT.md) §3 est la seule source.** Ce fichier ne les répète pas.
 
 ---
 
@@ -104,26 +106,9 @@ Les **ombres vertes** (CTAs primary, focus rings, halos sur cards featured) ne s
 - **Heading** — Poppins, weights 400 à 800. Letter-spacing négatif (`-0.02em` à `-0.03em`) pour les gros titres.
 - **Body** — Satoshi, variable 100 à 900. Tout le corps de texte, UI, formulaires.
 
-### Hiérarchie
+### Hiérarchie, tailles, paliers d'écran
 
-| Tag | Police | Mobile | Tablet | Desktop | Weight | Line-height | Note |
-|---|---|---|---|---|---|---|---|
-| H1 | Poppins | 36px | 44px | 56px | 800 | 1.05 | gradient text via `bg-clip-text` |
-| H2 | Poppins | 28px | 32px | 36px | 700 | 1.1 | letter-spacing `-0.02em` |
-| H3 | Poppins | 20px | 22px | 24px | 600 | 1.2 | accent green-400/700 |
-| H4 | Poppins | 16px | 17px | 18px | 600 | 1.3 | titres de blocs |
-
-### Breakpoints typo
-
-- **Mobile** : <640px (Tailwind < `sm`)
-- **Tablet** : 640px – 1024px (Tailwind `sm` à `lg`)
-- **Desktop** : ≥1024px (Tailwind `lg` et au-delà)
-
-Les valeurs desktop sont la référence canonique du DS. Mobile et tablet sont des paliers fixes — pas de `clamp()`, pas d'interpolation fluide. Un projet qui consomme le DS doit appliquer ces trois paliers via media queries ou variantes Tailwind (`text-[36px] sm:text-[44px] lg:text-[56px]`).
-
-### Tailles
-
-`text-xs` 12px, `text-sm` 14px, `text-base` 16px, `text-lg` 18px, `text-xl` 20px.
+Voir [AGENT.md](AGENT.md) §3, « Échelle de texte » : 13 rôles (titre 1 à chiffre vedette), trois paliers fixes (mobile, tablette, ordinateur), sans `clamp()`, rien au-dessus de 56px. Un surtitre seulement s'il ajoute une information que le titre ne donne pas.
 
 ### Couleurs de texte
 
@@ -809,17 +794,9 @@ Affichage tabulaire de données structurées avec colonnes typées
 
 `max-w-7xl` 1280px (layout), `max-w-5xl` 1024px (articles), `max-w-4xl` 896px (hero), `max-w-2xl` 672px (formulaires).
 
-### Padding
+### Padding, espacements, arrondis
 
-Padding horizontal responsive : `px-4 sm:px-6 lg:px-8` (16 → 24 → 32). Padding vertical de section : `py-12` (48px) ou `py-20` (80px) pour les sections larges. Pas de valeurs arbitraires.
-
-### Spacing entre éléments
-
-`space-x-2` 8px, `space-x-4` 16px, `space-x-8` 32px (alignement inline). `gap-4` 16px, `gap-6` 24px (grid/flex).
-
-### Border radius
-
-`rounded-sm` 4px, `rounded-lg` 8px, `rounded-xl` 12px, `rounded-2xl` 16px, `rounded-3xl` 24px (modals, overlays), `rounded-full` 9999px.
+Voir [AGENT.md](AGENT.md) §3, « Espacements » (grille de 4px en étages) et « Arrondis » (table par rôle et par composant).
 
 ### Grid System
 
@@ -892,9 +869,9 @@ Section critique. À injecter dans le contexte de Claude Code / Cursor / Lovable
 
 ### Règles absolues
 
-1. Palette d'identité Cyrano : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900. Couleurs supplémentaires (yellow / red / violet, etc.) autorisées au cas par cas pour les états d'alerte ou cas sémantiques précis.
-2. Préfère les CSS variables `--cy-green-500` ou les tokens Tailwind quand ils existent ; les hex en dur sont OK pour les couleurs ponctuelles non-thématiques.
-3. Titres en Poppins, corps en Satoshi.
+1. Palette d'identité Cyrano : green-300/400/500/600/700, deep-600/700/800/900/950, gray-300 à 900. Une couleur supplémentaire (état d'alerte, cas sémantique précis) passe par un token, voir la règle 2.
+2. Couleur de marque (vert, pétrole, gris, couleurs de sens) : toujours par son token `--cy-*` ou sa classe Tailwind, jamais en hex. Une couleur hors marque (un état précis, une illustration) se déclare d'abord comme token dans `tokens.css`, puis s'utilise ; jamais de hex dans un composant.
+3. Titres en Poppins, corps en Satoshi, tailles prises à l'échelle de texte d'[AGENT.md](AGENT.md) §3 (une taille = un rôle).
 4. Boutons en `rounded-full` par défaut, `rounded-xl` uniquement pour la variant `icon`.
 5. `CyAnimatedButton` uniquement pour les CTAs majeurs (un par vue), 3 tailles disponibles.
 6. Pas de sparkles, particules, magnetic pull, diamond spin.
