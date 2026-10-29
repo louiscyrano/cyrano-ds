@@ -20,7 +20,7 @@ const ICI = dirname(fileURLToPath(import.meta.url))
 const DEPOT = join(ICI, '..', '..')
 
 const ENTETE = (version) =>
-  `/* cyrano-marque ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main. */\n`
+  `/* cyrano-brand ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main. */\n`
 
 /** Le nom CSS de chaque famille de couleur et de chaque sens. Les noms --cy-* existaient avant le paquet. */
 const FAMILLES = { vert: 'green', petrole: 'deep' }
@@ -106,12 +106,12 @@ function module({ version, source }) {
   const logos = Object.fromEntries(Object.entries(source.logos).map(([nom, chemin]) => [nom, `logos/${basename(chemin)}`]))
   const valeurs = { version, couleurs, semantique, polices, logos }
   const js =
-    `// cyrano-marque ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main.\n` +
+    `// cyrano-brand ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main.\n` +
     Object.entries(valeurs)
       .map(([nom, v]) => `export const ${nom} = ${JSON.stringify(v, null, 2)}\n`)
       .join('\n')
   const dts =
-    `// cyrano-marque ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main.\n` +
+    `// cyrano-brand ${version}. Genere depuis marque.json par generer.mjs : ne pas modifier a la main.\n` +
     Object.entries(valeurs)
       .map(([nom, v]) => `export declare const ${nom}: ${JSON.stringify(v, null, 2)}\n`)
       .join('\n')
@@ -162,5 +162,5 @@ if (process.argv.includes('--verifier')) {
   console.log(`marque verifiee, generation deterministe (${ea.slice(0, 12)}).`)
 } else {
   generer(join(ICI, 'dist'))
-  console.log(`dist/ genere (cyrano-marque ${lireSource().version}, ${empreinte(join(ICI, 'dist')).slice(0, 12)}).`)
+  console.log(`dist/ genere (cyrano-brand ${lireSource().version}, ${empreinte(join(ICI, 'dist')).slice(0, 12)}).`)
 }
