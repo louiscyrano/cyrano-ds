@@ -4,7 +4,7 @@ Design system des livrables visuels de Cyrano (landings, decks, rapports, site),
 
 ## La marque
 
-Les couleurs, polices et logos de Cyrano ont une seule source : [`packages/marque/`](./packages/marque/README.md), publiée en release GitHub (`marque-v<version>`) et installée par Console, le site et les livrables. Les tokens de `src/styles/tokens.css` sont ceux des gabarits de cette preview ; une couleur de marque se change dans `packages/marque/marque.json`.
+Les couleurs, polices et logos de Cyrano ont une seule source : [`packages/brand/`](./packages/brand/README.md), paquet `cyrano-brand` (ex `cyrano-marque`), publiée en release GitHub (`brand-v<version>`, les anciennes `marque-v*` restent en place) et installée par Console, le site et les livrables. Les tokens de `src/styles/tokens.css` sont ceux des gabarits de cette preview ; une couleur de marque se change dans `packages/brand/marque.json`.
 
 ## Install
 

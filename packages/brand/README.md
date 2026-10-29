@@ -1,4 +1,6 @@
-# cyrano-marque
+# cyrano-brand
+
+> Ex `cyrano-marque`, renommé le 2026-10-29 (CYR-424). Les releases `marque-v*` restent en place, immuables, pour les anciens livrables qui y pointent.
 
 La marque Cyrano en un paquet : les couleurs (vert, pétrole, les quatre sens en clair et en sombre), les polices (pile système des apps, Poppins et Satoshi de la marque), les logos. **La source est `marque.json`** ; tout le reste est généré par `generer.mjs` et n'est jamais modifié à la main.
 
@@ -14,22 +16,22 @@ La marque Cyrano en un paquet : les couleurs (vert, pétrole, les quatre sens en
 
 1. Modifier `marque.json` (ou un logo, une police sous `public/`).
 2. Augmenter `version` dans `package.json` : correctif `1.0.1`, ajout `1.1.0`, renommage ou retrait `2.0.0`.
-3. Fusionner sur `main`. L'Action `marque` vérifie, génère et attache `cyrano-marque-<version>.tgz` à la release `marque-v<version>`. Les releases sont immuables : une version publiée ne change plus.
+3. Fusionner sur `main`. L'Action `brand` vérifie, génère et attache `cyrano-brand-<version>.tgz` à la release `brand-v<version>`. Les releases sont immuables : une version publiée ne change plus.
 4. Chez chaque consommateur, remplacer l'URL par la nouvelle (`pnpm add <url>`), et mettre à jour la fiche CCORE.
 
 ## Installer
 
 ```
-pnpm add https://github.com/louiscyrano/cyrano-ds/releases/download/marque-v1.0.0/cyrano-marque-1.0.0.tgz
+pnpm add https://github.com/louiscyrano/cyrano-ds/releases/download/brand-v1.1.0/cyrano-brand-1.1.0.tgz
 ```
 
 ```css
-@import 'cyrano-marque/marque.css';   /* --cy-green-500, --cy-deep-950, --cy-info-light, --cy-font-system... */
-@import 'cyrano-marque/polices.css';  /* Poppins et Satoshi : la marque seulement, jamais une app */
+@import 'cyrano-brand/marque.css';   /* --cy-green-500, --cy-deep-950, --cy-info-light, --cy-font-system... */
+@import 'cyrano-brand/polices.css';  /* Poppins et Satoshi : la marque seulement, jamais une app */
 ```
 
 ```ts
-import { couleurs, semantique, polices } from 'cyrano-marque'
+import { couleurs, semantique, polices } from 'cyrano-brand'
 couleurs.vert['500'] // '#05d37e'
 ```
 

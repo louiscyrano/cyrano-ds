@@ -1,25 +1,25 @@
-# La marque Cyrano (packages/marque) : verifiee sur chaque PR, publiee en release apres fusion.
-# Une release par version de packages/marque/package.json, etiquette marque-v<version>, jamais
+# La marque Cyrano (packages/brand, paquet cyrano-brand, ex cyrano-marque) : verifiee sur chaque PR, publiee en release apres fusion.
+# Une release par version de packages/brand/package.json, etiquette brand-v<version>, jamais
 # republiee : les releases du depot sont immuables, une URL donne toujours le meme paquet.
-name: marque
+name: brand
 
 on:
   push:
     branches: [main]
-    paths: ['packages/marque/**', 'public/logos/**', 'public/fonts/**', '.github/workflows/marque.yml']
+    paths: ['packages/brand/**', 'public/logos/**', 'public/fonts/**', '.github/workflows/brand.yml']
   pull_request:
-    paths: ['packages/marque/**', 'public/logos/**', 'public/fonts/**', '.github/workflows/marque.yml']
+    paths: ['packages/brand/**', 'public/logos/**', 'public/fonts/**', '.github/workflows/brand.yml']
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  marque:
+  brand:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: packages/marque
+        working-directory: packages/brand
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,13 +37,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           VERSION=$(node -p "require('./package.json').version")
-          TAG="marque-v$VERSION"
+          TAG="brand-v$VERSION"
           if gh release view "$TAG" >/dev/null 2>&1; then
-            echo "$TAG existe deja : rien a publier. Pour publier, augmenter la version de packages/marque/package.json."
+            echo "$TAG existe deja : rien a publier. Pour publier, augmenter la version de packages/brand/package.json."
             exit 0
           fi
-          FICHIER="cyrano-marque-$VERSION.tgz"
+          FICHIER="cyrano-brand-$VERSION.tgz"
           EMPREINTE=$(sha256sum "$FICHIER" | cut -d' ' -f1)
           URL="https://github.com/${{ github.repository }}/releases/download/$TAG/$FICHIER"
           printf 'La marque Cyrano, version %s.\n\nInstaller : `pnpm add %s` (ou `npm install`).\n\nsha256 : `%s`\n' "$VERSION" "$URL" "$EMPREINTE" > notes.md
-          gh release create "$TAG" "$FICHIER" --title "Marque $VERSION" --notes-file notes.md --target "$GITHUB_SHA"
+          gh release create "$TAG" "$FICHIER" --title "Brand $VERSION" --notes-file notes.md --target "$GITHUB_SHA"
